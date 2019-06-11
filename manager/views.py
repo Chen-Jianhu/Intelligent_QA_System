@@ -137,12 +137,16 @@ def qa_management(request, index):
         es = QASearch(index="qa_pairs")
         qa_data = es.get_all_data()
         # 更改es默认的键值
-        for qa in qa_data:
-            qa['id'] = qa.pop('_id')
+        for i, qa in enumerate(qa_data):
+            qa['id'] = i+1
+            qa['e_id'] = qa.pop('_id')
             qa['source'] = qa.pop('_source')
+            qa['question'] = qa['source']['question']
+            qa['answer'] = qa['source']['answer']
+
         qa_all_page = Paginator(qa_data, 10)
         index_list = qa_all_page.page_range # 页码列表
-        if index == '' :
+        if index == '':
             index = '1'
         index = int(index)
         if index < index_list[0] or index > index_list[-1]: # 控制页码不超出范围
