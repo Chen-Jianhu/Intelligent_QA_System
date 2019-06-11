@@ -1,0 +1,77 @@
+    {% load staticfiles %}
+
+    <!DOCTYPE html>
+    <html lang="zh-CN">
+    
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>登录</title>
+    
+        <!-- css -->
+        <link href="{% static 'bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
+    </head>
+    
+    <body style="background-color: #999">
+        <div class="text-center" style="padding-top: 50px">
+            <div style="width: 400px;margin: 0 auto;background-color: #fff;border-radius: 40px;">
+                <div style="padding: 50px;">
+                    <div style="width: 300px;margin: 0 auto;">
+                        <a id="logo"  href="{% url 'manager:index' %}">
+                            <img src="{% static 'img/logo.png' %}" alt="logo" style="width:125px; height:90px;">  
+                        </a>   
+                        <h3>管理员登录</h3>
+                        <form action="{% url 'manager:login' %}" method="post">
+                            {% csrf_token %}
+                            <div class="from-group" style="margin: 20px 0 10px 0;">
+                                <input type="text" id="account" name="name" class="form-control" placeholder="请输入账号" autocomplete="off">
+                            </div>
+                            <div class="from-group">
+                                <input type="password" id="pwd" name="pwd" class="form-control" placeholder="请输入密码">
+                            </div>
+                            <div class="form-group">
+                                <input type="hidden" name="is_handle_login" value="True">
+                            </div>
+                            <div class="form-group">
+                                <input id="submit" type="submit" class="btn btn-info btn-block" value="立即登录"> 
+                            </div>
+                        </form>
+                    </div>
+                    <div id="error" class="modal fade">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div id="erro_title" class="modal-header">
+                                    登陆失败，请重试
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <footer class="navbar-fixed-bottom" style="margin-bottom:30px">
+            <p class="text-center">
+                &copy; 2018-2019 | Powered by
+                <a href="https://www.djangoproject.com/">Django</a> |
+                <a href="{% url 'user:index' %}">首页</a> |
+                <a href="{% url 'manager:index' %}">后台管理</a> |
+                <a href="https://sse.ustc.edu.cn/">Contact Us</a>
+            </p>
+        </footer>
+    
+        <!-- jQuery -->
+        <script src="{% static 'bootstrap/js/jquery.min.js' %}"></script>
+        <!-- javascript -->
+        <script src="{% static 'bootstrap/js/bootstrap.min.js' %}"></script>
+        {% block script %}
+        {% endblock %}
+
+    
+    </body>
+    </html> 
+    
+        
+    
+    

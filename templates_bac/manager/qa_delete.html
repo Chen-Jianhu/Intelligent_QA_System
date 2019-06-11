@@ -1,0 +1,50 @@
+{% extends 'manager/base.html' %}
+{% block style %}
+<style type="text/css">
+    table.gridtable {
+        text-align:center;
+        color:#333333;
+        border-width: 1px;
+        border-color: #666666;
+        border-collapse: collapse;
+    }
+    table.gridtable th {
+        border-width: 1px;
+        padding: 8px;
+        border-style: solid;
+        border-color: #666666;
+        background-color: #dedede;
+    }
+    table.gridtable td {
+        border-width: 1px;
+        padding: 8px;
+        border-style: solid;
+        border-color: #666666;
+        background-color: #ffffff;
+    }
+</style>
+{% endblock style%}
+
+{% block body %}
+    <h2>{{ page_title }}</h2>  <br>
+    {% if name == '未登录' %}
+        <a href="{% url 'manager:login' %}" style="color: red">（提示：后台管理操作需要先登录管理员帐号！）</a>
+    {% else %}
+        {% if delete_result %}
+            <table class="gridtable">
+                <tr>
+                    <th width="70">问题编号</th>
+                    <th width="200">问题</th>
+                    <th>答案</th>
+                </tr>
+                <tr>
+                    <td>{{ need_delete_qa.pk }}</td>
+                    <td>{{ need_delete_qa.question }}</td>
+                    <td>{{ need_delete_qa.answer }}</td>
+                </tr>
+            </table>
+            <br>
+        {% endif %}
+        {{ delete_info }} <a href="{% url 'manager:qa_management' 1 %}">点此返回QA对管理界面!</a>
+    {% endif %}
+{% endblock body %}

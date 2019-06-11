@@ -1,0 +1,56 @@
+{% extends 'user/base.html' %}
+{% load staticfiles %}
+
+{% block style %}
+<style>
+    body {
+        background-color: #999;
+    }  
+</style>
+{% endblock %}
+{% block content %}
+    {% if not is_handle_register %}
+        <div class="text-center" style="padding-top: 50px;margin-top: 30px;">
+            <div style="width: 400px;margin: 0 auto;background-color: #fff;border-radius: 40px;">
+                <div style="padding: 50px;">
+                    <div style="width: 300px;margin: 0 auto;">
+                        <a id="logo"  href="{% url 'user:index' %}">
+                            <img src="{% static 'img/logo.png' %}" alt="logo" style="width:125px; height:90px;">  
+                        </a>   
+                        <h3>用户注册</h3>
+                        <form action="{% url 'user:register' %}" method="post">
+                            {% csrf_token %}
+                            <div class="from-group" style="margin: 20px 0 10px 0;">
+                                <input type="text" id="account" name="name" class="form-control" placeholder="请输入账号" autocomplete="off">
+                            </div>
+                            <div class="from-group">
+                                <input type="password" id="pwd" name="pwd" class="form-control" placeholder="请输入密码">
+                            </div>
+                            <div class="from-group" style="margin-top: 10px;">
+                                <input type="password" id="pwd2" name="pwd2" class="form-control" placeholder="请确认密码">
+                            </div>
+                            <div class="form-group">
+                                <input type="hidden" name="is_handle_register" value="True">
+                            </div>
+                            <div class="form-group">
+                                <input id="submit" type="submit" class="btn btn-info btn-block" value="立即注册"> 
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <footer class="navbar-fixed-bottom">
+            <p class="text-center">&copy; 2019&middot;Powered by
+                <a href="https://www.djangoproject.com/">Django</a>
+            </p>
+        </footer>
+    {% else %}
+        {% if register_result %}
+            {{ register_info }}
+            已为您登录！<a href="{% url 'user:chat' %}" style="text-decoration: brown"> 立即去提问~</a>
+        {% else %}
+            {{ register_info }} <a href="{% url 'user:register' %}" style="text-decoration: brown">点击重试</a>！
+        {% endif %}
+    {% endif %}
+{% endblock %}

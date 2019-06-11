@@ -1,0 +1,15 @@
+{% extends 'manager/base.html' %}
+
+{% block script %}
+    <script type="text/javascript">
+        $(function(){
+            $("#logout_title").text('{{ logout_info }}')
+            $("#logout").modal({
+                keyboard: true
+            });
+            setTimeout(function () {
+                $("#logout").modal('hide');
+            }, 700);
+        });
+    </script> 
+{% endblock %}

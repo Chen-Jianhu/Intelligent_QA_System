@@ -1,0 +1,56 @@
+{% extends 'manager/login_base.html' %}
+{% load staticfiles %}
+{% block script %}
+
+    {% if not is_handle_login %}
+    
+        <script type="text/javascript">
+            $("#submit").click(function () {
+                var account = $("#account").val();
+                if (!account) {
+                    $("#erro_title").text('账号不能为空')
+                    $("#error").modal('show');
+                    setTimeout(function () {
+                        $("#error").modal('hide');
+                    }, 1100);
+                    return false;
+                }
+                var pwd = $("#pwd").val();
+                if (!pwd) {
+                    $("#erro_title").text('密码不能为空')
+                    $("#error").modal('show');
+                    setTimeout(function () {
+                        $("#error").modal('hide');
+                    }, 1100);
+                    return false;
+                }
+            })
+        </script>
+    
+    {% else %}
+
+        {% if login_result %}
+            <script>
+                window.location.href = "{% url 'manager:index' %}";
+            </script>
+        {% else %}
+            <script type="text/javascript">
+                $(function(){
+                    $("#erro_title").text('{{ login_info }}')
+                    $("#error").modal({
+                        keyboard: true
+                    });
+                    setTimeout(function () {
+                        $("#error").modal('hide');
+                    }, 1100);
+                });
+            </script> 
+        {% endif %}
+
+    {% endif %}
+
+{% endblock %}
+
+    
+    
+    

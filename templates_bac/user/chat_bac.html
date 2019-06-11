@@ -1,0 +1,17 @@
+{% extends 'user/base.html' %}
+
+{% block body %}
+
+<form action="{% url 'user:chat'%}" method="post">
+    {% csrf_token %}
+    
+    <textarea name="user_question" cols="50" rows="5"> {{ answer}} </textarea> <br>
+    <input type="submit" value="发 送">
+
+    <br>
+    <br>
+    <b>使用方法：</b>
+    在文本框内输入您要提问的内容，点击发送。
+</form>
+
+{% endblock body %}

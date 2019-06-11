@@ -1,0 +1,41 @@
+{% load staticfiles %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>
+        {{ page_title }} | {{ app_name|default:"智能问答系统" }}
+    </title>
+
+    <!-- css -->
+    <link href="{% static 'bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
+
+    <style>
+        body {
+            background-image: url({% static 'img/index.jpg' %});
+            background-repeat: no-repeat;
+            background-position: center top;
+            background-color: #e6e6e6;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="jumbotron" style="background-color:rgba(0,0,0,0); margin-top:240px;margin-left:300px">
+        <div class="row">
+            <div class="col-md-6">
+                <div class="container" style="color:#FFFFFF">
+                    <h1>智能问答系统</h1>
+                    <p>点击“开始聊天”询问华为云相关产品问题</p>
+                    <p><a class="btn btn-primary btn-lg" href="{% url 'user:chat' %}" role="button">开始聊天</a></p>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <img src="{% static 'img/robot.png' %}" width="220">
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

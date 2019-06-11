@@ -1,0 +1,10 @@
+{% extends 'manager/base.html' %}
+
+{% block body %}
+    <h2>{{ page_title }}</h2>  <br>
+    {% if name == '未登录' %}
+        <a href="{% url 'manager:login' %}" style="color: red">（提示：后台管理操作需要先登录管理员帐号！）</a>
+    {% else %}
+
+    {% endif %}
+{% endblock body %}

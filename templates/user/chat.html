@@ -1,0 +1,127 @@
+{% extends 'user/base.html' %}
+{% load staticfiles%}
+
+{% block style %}
+<style type="text/css">
+	* {
+		margin: 0;
+		padding: 0;
+	}
+
+	#box {
+		width: 600px;
+		height: 500px;
+		margin: 100px auto;
+		border: 1px solid #666;
+	}
+
+	.talk_show {
+		width: 580px;
+		height: 420px;
+		margin: 10px auto;
+		border: 1px solid #666666;
+		overflow: auto;
+	}
+
+	.talk_input {
+		width: 580px;
+		margin: 10px auto;
+	}
+
+	.whotalk {
+		width: 80px;
+		height: 30px;
+		float: left;
+	}
+
+	.talk_word {
+		width: 420px;
+		height: 26px;
+		margin-left: 10px;
+		float: left;
+	}
+
+	.talk_sub {
+		width: 56px;
+		height: 30px;
+		float: left;
+		margin-left: 10px;
+	}
+
+	.atalk {
+		margin: 10px;
+	}
+
+	.atalk span {
+		background: #1f83c6;
+		border-radius: 10px;
+		display: inline-block;
+		padding: 5px 10px;
+		color: #fff;
+	}
+
+	.btalk {
+		margin: 10px;
+		text-align: right;
+
+	}
+
+	.btalk span {
+		background: #eb802f;
+		border-radius: 10px;
+		display: inline-block;
+		padding: 5px 10px;
+		color: #fff;
+	}
+</style>
+{% endblock %}
+
+{% block content %}
+<div id="box">
+	<div class="talk_show" id="words">
+		<div class="atalk"><span>{{ answer|safe }}</span></div>
+		{% comment %} <div class="btalk"><span>B说:还没呢</span></div> {% endcomment %}
+	</div>
+
+	<div class="talk_input">
+		<!--
+			<select  id="who"  class="whotalk">
+				<option value="0">A说:</option>
+				<option value="1">B说:</option>
+			</select>
+		-->
+		<input type="text" class="talk_word" id="talkwords">
+		<input type="button" value="发送" class="talk_sub" id="talksub">
+	</div>
+</div>
+{% endblock %}
+
+
+{% block script %}
+
+<script src={% static "js/jquery-2.1.4.min.js" %}></script>
+
+<!-- <script src="./jquery-1.12.4.min.js"></script> -->
+<script type="text/javascript">
+	$(function () {
+		var $mesBox = $("#words"); //取到对话框 里面的内容
+		var $mesType = $("#who");  //取到到底是谁说的
+		var $text = $("#talkwords"); //取到文本框里面的内容
+		var $sendBtn = $("#talksub"); //取到点击发送的按钮
+
+		$sendBtn.click(function () {
+			var sText = $text.val();
+			if (sText == '') {
+				alert("请先在聊天框输入内容哦~");
+				return;
+			}
+			$.post("{% url 'user:get_answer' %}", { user_question: sText, csrfmiddlewaretoken: '{{ csrf_token }}' }, function (result) {
+				console.log(result)
+				// $mesBox.html($mesBox.html() + '<br>'+sText+'<br>' + '{{answer}}');
+				$mesBox.html($mesBox.html() + '<div class="btalk"><span> ' + sText + ' </span></div>')
+				$mesBox.html($mesBox.html() + '<div class="atalk"><span>小科: ' + result + ' </span></div>')
+		})
+	})
+	})
+</script>
+{% endblock%}

@@ -1,0 +1,41 @@
+{% extends 'manager/base.html' %}
+
+{% block body %}
+    <h2>{{ page_title }}</h2> <br>
+    {% if not is_handle_login %}
+        <form action= "{% url 'manager:login' %}" method="post">
+            {% csrf_token %}
+            <table height="200">
+                <tr align="center">
+                    <th colspan="2">欢迎登录管理员后台，请填写您的账号信息：</th>
+                </tr>
+                <tr align="center">
+                    <td>用户名：</td>
+                    <td><input type="text" name="name"></td>
+                </tr>
+                <tr align="center">
+                    <td>密码：</td>
+                    <td><input type="password" name="pwd", value=""></td>
+                </tr>
+                <tr align="center">
+                    <td colspan="2">
+                        <input type="hidden" name="is_handle_login" value="True">
+                        <input type="submit" value="登 录">
+                    </td>
+                </tr>
+                <tr align="center">
+                    <td colspan="2">
+                        没有账号？管理员不能注册哦～
+                    </td>
+                </tr>
+            </table>
+        </form>
+    {% else %}
+        {% if login_result %}
+            {{ login_info }}
+            <a href="{% url 'manager:index' %}" style="text-decoration: brown"> 立即去后台管理主页~</a>
+        {% else %}
+            {{ login_info }} <a href="{% url 'manager:login' %}" style="text-decoration: brown">点击重试</a>！
+        {% endif %}
+    {% endif %}
+{% endblock body %}

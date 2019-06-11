@@ -1,0 +1,129 @@
+{% extends 'manager/base.html' %}
+
+{% block active1 %}list-group-item-info{% endblock %}
+
+{% block content %}
+    {% if name == '未登录' %}
+    <a href="{% url 'manager:login' %}" style="color: red">（提示：后台管理操作需要先登录管理员帐号！）</a>
+    {% else %}
+    <div class="col-xs-9">
+        <div class="col-xs-4">
+            <ul class="list-group">
+                <li class="list-group-item">
+                    <span class="badge alert-success">3</span>今日新增用户
+                </li>
+                <li class="list-group-item">
+                    <span class="badge alert-success">15</span>7天新增用户
+                </li>
+                <li class="list-group-item">
+                    <span class="badge alert-success">50</span>30天新增用户
+                </li>
+                <li class="list-group-item">
+                    <span class="badge alert-success">500</span>总用户数量
+                </li>
+            </ul>
+        </div>
+        <div class="col-xs-4">
+            <ul class="list-group">
+                <li class="list-group-item">
+                    <span class="badge alert-danger">3</span>未处理文件
+                </li>
+                <li class="list-group-item">
+                    <span class="badge alert-danger">3</span>未处理文件
+                </li>
+                <li class="list-group-item">
+                    <span class="badge alert-danger">3</span>未处理文件
+                </li>
+                <li class="list-group-item">
+                    <span class="badge alert-danger">3</span>未处理文件
+                </li>
+            </ul>
+        </div>
+        <div class="col-xs-4">
+            <ul class="list-group">
+                <li class="list-group-item">
+                    <span class="badge alert-info">3</span>今日新增QA对
+                </li>
+                <li class="list-group-item">
+                    <span class="badge alert-info">15</span>7天新增QA对
+                </li>
+                <li class="list-group-item">
+                    <span class="badge alert-info">50</span>30天新增QA对
+                </li>
+                <li class="list-group-item">
+                    <span class="badge alert-info">500</span>总QA对数量
+                </li>
+            </ul>
+        </div>
+        <div class="h5">公告（通知）</div>
+        <div class="panel-group">
+            <div class="panel panel-info">
+                <div class="panel-heading">
+                    <h4 class="panel-title">
+                        <a href="#not1" class="collapsed" data-toggle="collapse">通知1</a>
+                    </h4>
+                </div>
+                <div id="not1" class="panel-collapse collapse">
+                    <div class="panel-body">今天天气真好！</div>
+                </div>
+            </div>
+        </div>
+        <div class="panel-group">
+            <div class="panel panel-info">
+                <div class="panel-heading">
+                    <h4 class="panel-title">
+                        <a href="#not2" class="collapsed" data-toggle="collapse">通知2</a>
+                    </h4>
+                </div>
+                <div id="not2" class="panel-collapse collapse">
+                    <div class="panel-body">今天天气真好！</div>
+                </div>
+            </div>
+        </div>
+        <div class="panel-group">
+            <div class="panel panel-info">
+                <div class="panel-heading">
+                    <h4 class="panel-title">
+                        <a href="#not3" class="collapsed" data-toggle="collapse">通知3</a>
+                    </h4>
+                </div>
+                <div id="not3" class="panel-collapse collapse">
+                    <div class="panel-body">今天天气真好！</div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-xs-3">
+        <table class="table table-striped">
+            <caption>服务器信息</caption>
+            <tbody>
+                <tr>
+                    <td>当前状态</td>
+                    <td>正常</td>
+                </tr>
+                <tr>
+                    <td>系统版本</td>
+                    <td>linux ubuntu</td>
+                </tr>
+                <tr>
+                    <td>前端框架</td>
+                    <td>bootstrap 3.7</td>
+                </tr>
+                <tr>
+                    <td>后台框架</td>
+                    <td>Django 1.8</td>
+                </tr>
+                <tr>
+                    <td>数据库</td>
+                    <td>mysql 5.0</td>
+                </tr>
+                <tr>
+                    <td>硬盘剩余</td>
+                    <td>80G</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    {% endif %}
+{% endblock %}
