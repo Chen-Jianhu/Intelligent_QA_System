@@ -44,11 +44,13 @@
             </a>
         </li>
         {%for i in index_list%}
-        {% if i == index %}
-        <li class="active"><a href="#">{{ i }}</a></li>
-        {% else %}
-        <li><a href="{% url 'manager:qa_generate' i %}">{{ i }}</a></li>
-        {% endif %}
+            {% if i > 0 and i <= index|add:3 and i >= index|add:-3 %}
+                {% if i == index %}
+                    <li class="active"><a href="#">{{ i }}</a></li>
+                {% else %}
+                    <li><a href="{% url 'manager:qa_management' i %}">{{ i }}</a></li>
+                {% endif %}
+            {% endif %}
         {%endfor%}
         <li>
             <a href="{% url 'manager:qa_generate' index|add:1 %}" aria-label="Next">

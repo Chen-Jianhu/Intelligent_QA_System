@@ -8,7 +8,7 @@
 {% block active2 %}list-group-item-info{% endblock %}
 
 {% block content %}
-    {% comment %} {% if name == '未登录' %}
+    {% if name == '未登录' %}
         <a href="{% url 'manager:login' %}" style="color: red">（提示：后台管理操作需要先登录管理员帐号！）</a>
     {% else %}
         {% if not is_handle_upload %}
@@ -24,26 +24,27 @@
                 <b>上传失败！</b>
             {% endif %}
         {% endif %}
-    {% endif %} {% endcomment %}
-
-    {% if name == '未登录' %}
-        <a href="{% url 'manager:login' %}" style="color: red">（提示：后台管理操作需要先登录管理员帐号！）</a>
-    {% else %}
-        {% if not is_handle_upload %}
-            <form method="post" action="{% url 'manager:upload_file' %}" enctype="multipart/form-data">
-                {% csrf_token %}
-                <input type="file" name="doc"/> <br><br>
-                <input type="hidden" name="is_handle_upload" value="True">
-                <input type="submit" value="上 传">
-            </form>
-        {% else %}
-            {% if upload_result %}
-                <b>上传成功！</b>
-            {% else %}
-                <b>上传失败！</b>
-            {% endif %}
-        {% endif %}
     {% endif %}
+
+{#    {% if name == '未登录' %}#}
+{#        <a href="{% url 'manager:login' %}" style="color: red">（提示：后台管理操作需要先登录管理员帐号！）</a>#}
+{#    {% else %}#}
+{#        {% if not is_handle_upload %}#}
+{#            <form method="post" action="{% url 'manager:upload_file' %}" enctype="multipart/form-data">#}
+{#                {% csrf_token %}#}
+{#                <input type="file" name="doc"/> <br><br>#}
+{#                <input type="hidden" name="is_handle_upload" value="True">#}
+{#                <input type="submit" value="上 传">#}
+{#            </form>#}
+{#        {% else %}#}
+{#            {% if upload_result %}#}
+{#                <b>上传成功！</b>#}
+{#            {% else %}#}
+{#                <b>上传失败！</b>#}
+{#            {% endif %}#}
+{#        {% endif %}#}
+{#    {% endif %}#}
+
 {% endblock %}
 
 {% block script %}
@@ -80,7 +81,7 @@
                 maxFileCount: 3, //表示允许同时上传的最大文件个数
                 enctype: 'multipart/form-data',
                 validateInitialCount:true,
-                showPreview: false,
+                showPreview: true,
                 previewFileIcon: "<i class='glyphicon glyphicon-king'></i>",
                 msgFilesTooMany: "选择上传的文件数量({n}) 超过允许的最大数值{m}！",
             });
