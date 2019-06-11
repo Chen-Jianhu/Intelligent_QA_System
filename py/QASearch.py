@@ -1,4 +1,3 @@
-import elasticsearch
 from elasticsearch import Elasticsearch
 import json
 
@@ -17,7 +16,9 @@ class QASearch(object):
             }
         }
         # self.es.indices.delete(index= self.index, ignore=[400, 404])
-        # self.es.indices.create(index= self.index, ignore=400)
+        self.es.indices.create(index= self.index, ignore=400)
+        # if self.es.indices.exists(index = self.index) is not True:
+        #     self.es.indices.create(index = self.index, ignore = 400)
         self.es.indices.put_mapping(index=self.index, body=self.mapping)
 
     def insert_from_file(self, filepath):
@@ -30,27 +31,71 @@ class QASearch(object):
         self.es.index(index=self.index, body=data)
 
     def delete_one_data(self, id):
-        self.es.delete(index=self.index, id=id)
+        """
+        根据 id 删除数据
+        """
+        self.es.delete(index=self.index, id = id)
 
     def update_one_date(self, new_data, id):
-        self.es.update(index=self.index, body=new_data, id=id)
+        """
+        根据 id 和 new_data 更新数据
+        """
+        self.es.update(index=self.index, body=new_data, id = id)
 
     def search_data(self, content):
+        """
+        正确搜索到 返回 最佳答案 和 url
+        没搜索到 返回 -1
+        后续可改为根据 score 值选择返回答案还是-1
+        """
         dsl = {'query': {'match': {'question': content}}}
-        result = self.es.search(index=self.index, body=dsl)
-        # print(result)
-        # ans = json.dumps(result, indent=2, ensure_ascii=False)
-        return result["hits"]["hits"][0]['_source']['answer'], result["hits"][
-            "hits"][0]['_source']['link']
-
+        try:
+            result = self.es.search(index=self.index, body=dsl)
+            # print(result)
+            # ans = json.dumps(result, indent=2, ensure_ascii=False)
+            # print(ans)
+            return result["hits"]["hits"][0]['_source']['answer'], result["hits"][
+                "hits"][0]['_source']['link']
+        except:
+            print("Not Found!")
+            return -1
+    
+    def search_datas_by_question(self, content):
+        """
+        正确搜索到 返回 hits
+        没搜索到  返回 -1
+        """
+        dsl = {'query': {'match': {'question': content}}}
+        try:
+            result = self.es.search(index=self.index, body=dsl)
+            # ans = json.dumps(result, indent=2, ensure_ascii=False)
+            # print(result)
+            return result["hits"]["hits"]
+        except:
+            print("Not Found!")
+            return -1
+   
+    def search_datas_by_answer(self, content):
+        """
+        正确搜索到 返回 hits
+        没搜索到  返回 -1
+        """
+        dsl = {'query': {'match': {'answer': content}}}
+        try:
+            result = self.es.search(index=self.index, body=dsl)
+            return result["hits"]["hits"]
+        except:
+            print("Not Found!")
+            return -1
+        
     def get_all_data(self):
-        query_json = {"match": {"_index": "qa_pairs"}}
+        query_json = {"match": {"_index": self.index}}
         # 遍历所有的查询条件
         queryData = self.es.search(index=self.index,
                                    scroll='5m',
                                    timeout='3s',
                                    size=100,
-                                   body={"query": query_json})
+                                   body={"query": query_json})                     
         all_datas = queryData.get("hits").get("hits")
         scroll_id = queryData["_scroll_id"]
         total = queryData["hits"]["total"]["value"]
@@ -60,48 +105,3 @@ class QASearch(object):
             res = self.es.scroll(scroll_id=scroll_id, scroll='5m') 
             all_datas += res["hits"]["hits"]
         return all_datas
-
-if __name__ == "__main__":
-    es = QASearch(index="qa_pairs")
-    # es.insert_from_file('./QA_pairs_compute.json')
-    while True:
-        try:
-            question = input("输入问题:")
-            result, url = es.search_data(question)
-            print("答案为:\n", result)
-            print("url:\n", url)
-        except elasticsearch.exceptions.NotFoundError:
-            print("Not Found!")
-    # ds = es.get_all_data()
-    # print(ds[0])
-    # print(len(ds))
-# es = Elasticsearch()
-# mapping = {
-#     'properties': {
-#         'question': {
-#             'type': 'text',
-#             'analyzer': 'ik_max_word',
-#             'search_analyzer': 'ik_max_word'
-#         }
-#     }
-# }
-
-# es.indices.delete(index='qa_pairs', ignore=[400, 404])
-# es.indices.create(index='qa_pairs', ignore=400)
-# es.indices.put_mapping(index='qa_pairs', body=mapping)
-
-# with open('QA_pairs.json', 'r') as f:
-#     datas = json.load(f)
-
-# for data in datas:
-#     es.index(index='qa_pairs', body=data)
-
-# dsl = {
-#     'query': {
-#         'match': {
-#             'question': '简介'
-#         }
-#     }
-# }
-# result = es.search(index='qa_pairs', body=dsl)
-# print(json.dumps(result, indent=2, ensure_ascii=False))
