@@ -9,8 +9,8 @@ from tqdm import tqdm
 
 class HuaweiCloud:
     def __init__(self):
-	self.index_url = 'https://support.huaweicloud.com'
-	self.sess = requests.Session()
+        self.index_url = 'https://support.huaweicloud.com'
+        self.sess = requests.Session()
         self.headers = {
             'User-Agent':
             'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_3) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.103 Safari/537.36'
@@ -247,11 +247,11 @@ class HuaweiCloud:
             result.append('\n'.join(subcontent[start_index + 1:]))
         return result
 
-    def parse_page(self, html_list, save_path='contents.json'):
+    def parse_page(self, html_list):
         # 用于从存储解析出的内容
         contents = []
 
-        print('正在解析页面：')
+        # print('正在解析页面：')
         for file in tqdm(html_list):
             content = {}
 
@@ -282,11 +282,12 @@ class HuaweiCloud:
             content['subcontent'] = subcontent
 
             contents.append(content)
-        print('解析完成，正在写入文件.')
+        # print('解析完成，正在写入文件.')
         json_str = json.dumps(contents,
                               indent=4,
                               sort_keys=True,
                               ensure_ascii=False)
-        with open(save_path, 'w') as f:
-            f.write(json_str)
-        print('写入完毕！')
+        # with open(save_path, 'w') as f:
+        #     f.write(json_str)
+        # print('写入完毕！')
+        return contents
