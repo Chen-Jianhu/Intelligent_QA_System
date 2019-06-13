@@ -7,6 +7,8 @@ from user.models import *
 from py import QAGeneration
 
 from py.QASearch import QASearch
+from py.HuaweiCloud import HuaweiCloud
+from py.QAGeneration import QAGeneration
 import os
 
 # Create your views here.
@@ -102,61 +104,6 @@ def upload_file(request):
             context['upload_result'] = upload_result,
     return render(request, 'manager/upload_file.html', context)
 
-def qa_generate(request, index):
-    mname = request.session.get('mname', '未登录')
-    context = {
-        'page_title': 'QA对生成',
-        'name': mname,
-    }
-    if mname != '未登录':
-        # 获取上传文件列表
-        files  = os.listdir('./static/manager/upload')
-        file_list = [{i:file_name} for i, file_name in zip(range(1, len(files) + 1), files)]
-        all_file = Paginator(file_list, 10)
-        index_list = all_file.page_range # 页码列表
-        if index == '' :
-            index = '1'
-        index = int(index)
-        if index < index_list[0] or index > index_list[-1]: # 控制页码不超出范围
-            index = 1
-        this_page_list = all_file.page(index)
-        context['index'] = index # 当前页码
-        context['this_page_list'] = this_page_list # 当前页内容列表
-        context['index_list'] = index_list  # 页码列表
-    return render(request, 'manager/qa_generate.html', context)
-
-
-def qa_management(request, index):
-    mname = request.session.get('mname', '未登录')
-    context = {
-        'page_title': '知识库管理',
-        'name': mname,
-    }
-    if mname != '未登录':
-        # 调用es search
-        es = QASearch(index="qa_pairs")
-        qa_data = es.get_all_data()
-        # 更改es默认的键值
-        for i, qa in enumerate(qa_data):
-            qa['id'] = i+1
-            qa['e_id'] = qa.pop('_id')
-            qa['source'] = qa.pop('_source')
-            qa['question'] = qa['source']['question']
-            qa['answer'] = qa['source']['answer']
-
-        qa_all_page = Paginator(qa_data, 10)
-        index_list = qa_all_page.page_range # 页码列表
-        if index == '':
-            index = '1'
-        index = int(index)
-        if index < index_list[0] or index > index_list[-1]: # 控制页码不超出范围
-            index = 1
-        this_page_list = qa_all_page.page(index)
-        context['index'] = index # 当前页码
-        context['this_page_list'] = this_page_list # 当前页内容列表
-        context['index_list'] = index_list # 页码列表
-    return render(request, 'manager/qa_management.html', context)
-
 
 def user_management(request, index):
     mname = request.session.get('mname', '未登录')
@@ -180,6 +127,92 @@ def user_management(request, index):
     return render(request, 'manager/user_management.html', context)
 
 
+def qa_generation(request, index):
+    mname = request.session.get('mname', '未登录')
+    context = {
+        'page_title': 'QA对生成',
+        'name': mname,
+    }
+    if mname != '未登录':
+        # 获取上传文件列表
+        files  = os.listdir('./static/manager/upload')
+        file_list = [{i:file_name} for i, file_name in zip(range(1, len(files) + 1), files)]
+        all_file = Paginator(file_list, 10)
+        index_list = all_file.page_range # 页码列表
+        if index == '' :
+            index = '1'
+        index = int(index)
+        if index < index_list[0] or index > index_list[-1]: # 控制页码不超出范围
+            index = 1
+        this_page_list = all_file.page(index)
+        context['index'] = index # 当前页码
+        context['this_page_list'] = this_page_list # 当前页内容列表
+        context['index_list'] = index_list  # 页码列表
+    return render(request, 'manager/qa_generation.html', context)
+
+
+def qa_management(request, index):
+    mname = request.session.get('mname', '未登录')
+    context = {
+        'page_title': '知识库管理',
+        'name': mname,
+    }
+    if mname != '未登录':
+        # 调用es search
+        es = QASearch(index="qa_pairs")
+        qa_data = es.get_all_data()
+        # 更改es默认的键值
+        for i, qa in enumerate(qa_data):
+            qa['id'] = i+1
+            qa['es_id'] = qa.pop('_id')
+            qa['source'] = qa.pop('_source')
+            qa['question'] = qa['source']['question']
+            qa['answer'] = qa['source']['answer']
+
+        qa_all_page = Paginator(qa_data, 10)
+        index_list = qa_all_page.page_range # 页码列表
+        if index == '':
+            index = '1'
+        index = int(index)
+        if index < index_list[0] or index > index_list[-1]: # 控制页码不超出范围
+            index = 1
+        this_page_list = qa_all_page.page(index)
+        context['index'] = index # 当前页码
+        context['this_page_list'] = this_page_list # 当前页内容列表
+        context['index_list'] = index_list # 页码列表
+    return render(request, 'manager/qa_management.html', context)
+
+
+def qa_generate(request):
+    mname = request.session.get('mname', '未登录')
+    context = {
+        'page_title': 'QA对生成',
+        'name': mname,
+    }
+    if mname != '未登录':
+        file_path = ['./static/manager/upload/' + request.POST.get('fname'), ]
+        print(file_path)
+        # 调用华为云页面解析程序
+        print('调用华为云页面解析程序')
+        HW = HuaweiCloud()
+        json_data = HW.parse_page(file_path)
+        print(json_data)
+        # 调用生成算法
+        print('调用QA生成算法')
+        QAG = QAGeneration()
+        new_qa_pairs = QAG.run(json_data)
+        # 添加进ES中
+        # 调用es search
+        print('调用ES插入算法')
+        es = QASearch(index="qa_pairs")
+        if es.insert_from_json_str(new_qa_pairs):
+            result = '本次共生成{}条QA对！'.format(len(new_qa_pairs))
+        else:
+            result = '生成QA对失败！'
+    else:
+        result = '后台管理操作需要先登录管理员账户！'
+    return HttpResponse(result)
+
 def qa_create(request):
     mname = request.session.get('mname', '未登录')
     context = {
@@ -187,24 +220,23 @@ def qa_create(request):
         'name': mname,
     }
     if mname != '未登录':
-        is_handle_create = request.POST.get('is_handle_create', False)
-        context['is_handle_create'] = is_handle_create
-        if is_handle_create:
-            qa = {
-                'question': request.POST.get('question', None),
-                'answer': request.POST.get('answer', None)
-            }
-            if qa['question'] == '' or qa['answer'] == '':
-                create_result = False
-                create_info = '添加记录失败,请确保问题和答案都不为空!'
-            else:
-                new_qa = QA.manager.create(qa)
-                new_qa.save()
-                create_result = True
+        qa = {
+            'question': request.POST.get('question', None),
+            'answer': request.POST.get('answer', None),
+            "link": request.POST.get('link', None),
+            "subject": request.POST.get('subject', None),
+        }
+        if qa['question'] == '' or qa['answer'] == '':
+            create_info = '添加记录失败,请确保问题和答案都不为空!'
+        else:
+            # 调用es search
+            es = QASearch(index="qa_pairs")
+            create_result = es.insert_one_data(data=qa)
+            if create_result:
                 create_info = '成功添加一条记录！'
-            context['create_result'] = create_result
-            context['create_info'] = create_info
-    return render(request, 'manager/qa_create.html', context)
+            else:
+                create_info = '添加记录失败！请重试~'
+    return HttpResponse(create_info)
 
 def qa_update(request, pk):
     mname = request.session.get('mname', '未登录')
@@ -253,41 +285,67 @@ def qa_update(request, pk):
         context['pk'] = pk
     return render(request, 'manager/qa_update.html', context)
 
-def qa_delete(request, pk):
+
+def qa_delete(request):
     mname = request.session.get('mname', '未登录')
     context = {
         'page_title': '删除QA对',
         'name': mname,
     }
+    # 获取需要删除的QA对的es_id
+    del_es_id = request.POST.get('del_es_id', None),
     if mname != '未登录':
-        try:
-            need_delete_qa = QA.manager.get(pk=pk)
-        except:
-            delete_result = False
+        # 调用es search
+        es = QASearch(index="qa_pairs")
+        delete_result = es.delete_one_data(id=del_es_id)
+        if not delete_result:
             delete_info = '删除失败,未找到此QA对!'
         else:
-            if need_delete_qa.is_delete: # 已经逻辑删除过了
-                delete_result = False
-                delete_info = '删除失败,未找到此QA对!'
-            else:
-                delete_result = True
-                context['need_delete_qa'] = need_delete_qa
-                need_delete_qa.is_delete = True # 逻辑删除
-                delete_info = '删除成功!'
-                need_delete_qa.save()
+            delete_info = '删除成功!'
         context['delete_result'] = delete_result
         context['delete_info'] = delete_info
-    return render(request, 'manager/qa_delete.html', context)
+    return HttpResponse(delete_info)
 
-def qa_search(request):
+
+def qa_search(request, index):
     mname = request.session.get('mname', '未登录')
     context = {
         'page_title': '搜索结果',
         'name': mname,
     }
     if mname != '未登录':
-        pass
-    return HttpResponse('开发中')
+        # 存放搜索结果
+        # 搜索方式
+        q_type = request.POST.get('search_type', None)
+        content = request.POST.get('search_content', None)
+        # 调用es search
+        es = QASearch(index="qa_pairs")
+        print(q_type)
+        if q_type == 'a':
+            qa_data = es.search_datas_by_answer(content=content)
+        else:
+            qa_data = es.search_datas_by_question(content=content)
+
+        # 更改es默认的键值
+        for i, qa in enumerate(qa_data):
+            qa['id'] = i + 1
+            qa['es_id'] = qa.pop('_id')
+            qa['source'] = qa.pop('_source')
+            qa['question'] = qa['source']['question']
+            qa['answer'] = qa['source']['answer']
+
+        qa_all_page = Paginator(qa_data, 10)
+        index_list = qa_all_page.page_range  # 页码列表
+        if index == '':
+            index = 1
+        index = int(index)
+        if index < index_list[0] or index > index_list[-1]:  # 控制页码不超出范围
+            index = 1
+        this_page_list = qa_all_page.page(index)
+        context['index'] = index  # 当前页码
+        context['this_page_list'] = this_page_list  # 当前页内容列表
+        context['index_list'] = index_list  # 页码列表
+    return render(request, 'manager/qa_search.html', context)
 
 
 def user_delete(request):
@@ -311,4 +369,21 @@ def user_update(request):
         pass
     return HttpResponse('开发中')
 
-    
+
+def delete_file(request):
+    mname = request.session.get('mname', '未登录')
+    context = {
+        'page_title': '删除文件',
+        'name': mname,
+    }
+    if mname != '未登录':
+        fname = request.POST.get('fname', None)
+        file_path = './static/manager/upload/'+fname
+        if fname and os.path.exists(file_path):
+            os.remove(file_path)
+            result = '删除成功！'
+        else:
+            result = '删除失败！'
+    else:
+        result = '后台管理操作需要先登录管理员账户！'
+    return HttpResponse(result)
