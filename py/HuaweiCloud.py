@@ -247,7 +247,13 @@ class HuaweiCloud:
             result.append('\n'.join(subcontent[start_index + 1:]))
         return result
 
-    def parse_page(self, html_list):
+    def parse_page(self, html_list, sava_path=None):
+        '''
+        解析页面
+        :param html_list: 需要解析的html页面路径
+        :param sava_path: 如果需要保存，填写此路径
+        :return: 一个列表，包含解析的结果
+        '''
         # 用于从存储解析出的内容
         contents = []
 
@@ -282,12 +288,13 @@ class HuaweiCloud:
             content['subcontent'] = subcontent
 
             contents.append(content)
-        # print('解析完成，正在写入文件.')
-        json_str = json.dumps(contents,
-                              indent=4,
-                              sort_keys=True,
-                              ensure_ascii=False)
-        # with open(save_path, 'w') as f:
-        #     f.write(json_str)
-        # print('写入完毕！')
+        if sava_path:
+            # print('解析完成，正在写入文件.')
+            json_str = json.dumps(contents,
+                                  indent=4,
+                                  sort_keys=True,
+                                  ensure_ascii=False)
+            with open(sava_path, 'w') as f:
+                f.write(json_str)
+            # print('写入完毕！')
         return contents
