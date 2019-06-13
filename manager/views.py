@@ -195,23 +195,24 @@ def qa_generate(request):
         # 调用华为云页面解析程序
         print('调用华为云页面解析程序')
         HW = HuaweiCloud()
-        json_data = HW.parse_page(file_path)
-        print(json_data)
+        parse_data = HW.parse_page(file_path)
+        print(parse_data)
         # 调用生成算法
         print('调用QA生成算法')
         QAG = QAGeneration()
-        new_qa_pairs = QAG.run(json_data)
+        new_qa_pairs = QAG.run(parse_data)
         # 添加进ES中
         # 调用es search
         print('调用ES插入算法')
         es = QASearch(index="qa_pairs")
-        if es.insert_from_json_str(new_qa_pairs):
+        if es.insert_from_mem(new_qa_pairs):
             result = '本次共生成{}条QA对！'.format(len(new_qa_pairs))
         else:
             result = '生成QA对失败！'
     else:
         result = '后台管理操作需要先登录管理员账户！'
     return HttpResponse(result)
+
 
 def qa_create(request):
     mname = request.session.get('mname', '未登录')
@@ -237,6 +238,7 @@ def qa_create(request):
             else:
                 create_info = '添加记录失败！请重试~'
     return HttpResponse(create_info)
+
 
 def qa_update(request, pk):
     mname = request.session.get('mname', '未登录')
