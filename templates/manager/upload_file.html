@@ -8,33 +8,14 @@
 {% block active2 %}list-group-item-info{% endblock %}
 
 {% block content %}
-    {% if name == '未登录' %}
-        <a href="{% url 'manager:login' %}" style="color: red">（提示：后台管理操作需要先登录管理员帐号！）</a>
-    {% else %}
-        {% if not is_handle_upload %}
-            <form method="post" action="{% url 'manager:upload_file' %}" enctype="multipart/form-data">
-                {% csrf_token %}
-                <input type="file" name="txt_file" id="txt_file" multiple class="file-loading" />
-                <input type="hidden" name="is_handle_upload" value="True">
-            </form>
-        {% else %}
-            {% if upload_result %}
-                <b>上传成功！</b>
-            {% else %}
-                <b>上传失败！</b>
-            {% endif %}
-        {% endif %}
-    {% endif %}
-
 {#    {% if name == '未登录' %}#}
 {#        <a href="{% url 'manager:login' %}" style="color: red">（提示：后台管理操作需要先登录管理员帐号！）</a>#}
 {#    {% else %}#}
 {#        {% if not is_handle_upload %}#}
 {#            <form method="post" action="{% url 'manager:upload_file' %}" enctype="multipart/form-data">#}
 {#                {% csrf_token %}#}
-{#                <input type="file" name="doc"/> <br><br>#}
+{#                <input type="file" name="txt_file" id="txt_file" multiple class="file-loading" />#}
 {#                <input type="hidden" name="is_handle_upload" value="True">#}
-{#                <input type="submit" value="上 传">#}
 {#            </form>#}
 {#        {% else %}#}
 {#            {% if upload_result %}#}
@@ -44,6 +25,25 @@
 {#            {% endif %}#}
 {#        {% endif %}#}
 {#    {% endif %}#}
+
+    {% if name == '未登录' %}
+        <a href="{% url 'manager:login' %}" style="color: red">（提示：后台管理操作需要先登录管理员帐号！）</a>
+    {% else %}
+        {% if not is_handle_upload %}
+            <form method="post" action="{% url 'manager:upload_file' %}" enctype="multipart/form-data">
+                {% csrf_token %}
+                <input type="file" name="doc"/> <br><br>
+                <input type="hidden" name="is_handle_upload" value="True">
+                <input type="submit" value="上 传">
+            </form>
+        {% else %}
+            {% if upload_result %}
+                <b>上传成功！</b>
+            {% else %}
+                <b>上传失败！</b>
+            {% endif %}
+        {% endif %}
+    {% endif %}
 
 {% endblock %}
 
