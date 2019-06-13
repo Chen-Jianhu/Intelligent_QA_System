@@ -7,22 +7,26 @@
 {% if name == '未登录' %}
 <a href="{% url 'manager:login' %}" style="color: red">（提示：后台管理操作需要先登录管理员帐号！）</a>
 {% else %}
-<form class="form-inline col-xs-6" action="{% url 'manager:qa_search' %}" method="post">
+<form class="form-inline col-xs-6" action="{% url 'manager:qa_search' 1%}" method="post">
     {% csrf_token %}
     <div class="input-group">
-        <select name="search_type" class="form-control">
+        <select id="search_type" name="search_type" class="form-control">
             <option value="q">问题</option>
             <option value="a">答案</option>
         </select>
     </div>
     <div class="input-group">
-        <input name="search_content" type="text" class="form-control" placeholder="请输入关键词" autocomplete="off">
+        <input name="search_content" id="search_content" type="text" class="form-control" placeholder="请输入关键词" autocomplete="off">
         <div class="input-group-btn">
-            <button class="btn btn-primary" type="submit">搜索</button>
+            <button class="btn btn-primary" type="submit" >搜索</button>
         </div>
     </div>
 </form>
-<button class="btn btn-success pull-right" data-toggle="modal" data-target="#add">新增问答对</button>
+
+<div class="form-inline col-xs-6">
+    <button class="btn btn-success pull-right" data-toggle="modal" data-target="#create">新增问答对</button>
+</div>
+
 
 <div class="clearfix"></div>
 
@@ -30,6 +34,7 @@
     <thead>
         <tr>
             <th>序号</th>
+            <th>ES_ID</th>
             <th>问题</th>
             <th>答案</th>
             <th>操作</th>
@@ -39,14 +44,15 @@
         {% for qa in this_page_list %}
         <tr>
             <td>{{ qa.id }}</td>
+            <td>{{ qa.es_id }}</td>
             <td>{{ qa.question }}</td>
             <td>{{ qa.answer }}</td>
             <td>
                 <button class="btn btn-success btn-sm" data-toggle="modal" data-target="#edit"
-                    onclick="edit('{{ qa.e_id }}', '{{ qa.question }}')">
+                    onclick="edit('{{ qa.es_id }}', '{{ qa.question }}')">
                     <span class="glyphicon glyphicon-edit"></span>
                 </button>
-                <button class="btn btn-danger btn-sm" data-toggle="modal" data-target="#del" onclick="del('{{ qa.e_id }}')">
+                <button class="btn btn-danger btn-sm" data-toggle="modal" data-target="#del" onclick="del('{{ qa.es_id }}', '{{ qa.question }}')">
                     <span class="glyphicon glyphicon-trash"></span>
                 </button>
             </td>
@@ -80,7 +86,7 @@
 </nav>
 
 {#新增QA对    #}
-<div class="modal fade" id="add" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+<div class="modal fade" id="create" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
@@ -92,16 +98,24 @@
             <div class="modal-body">
                 <div class="form-group">
                     <label for="">问题</label>
-                    <textarea class="form-control"></textarea>
+                    <textarea class="form-control" id="create_question"></textarea>
                 </div>
                 <div class="form-group">
                     <label for="">答案</label>
-                    <textarea class="form-control"></textarea>
+                    <textarea class="form-control" id="create_answer"></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="">主题（可选）</label>
+                    <textarea class="form-control" id="create_subject"></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="">答案链接（可选）</label>
+                    <textarea class="form-control" id="create_link"></textarea>
                 </div>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
-                <button type="button" class="btn btn-primary">确定</button>
+                <button id="create_btn" type="button" class="btn btn-primary">确定</button>
             </div>
         </div>
     </div>
@@ -120,7 +134,7 @@
             <div class="modal-body">
                 <div class="form-group">
                     <label for="">ElasticSearch_Id</label>
-                    <textarea id="es_edit_id" class="form-control" placeholder="ElasticSearch_Id"></textarea>
+                    <textarea id="edit_es_id" class="form-control" placeholder="ElasticSearch_Id"></textarea>
                 </div>
                 <div class="form-group">
                     <label for="">问题</label>
@@ -150,13 +164,25 @@
                 <h4 class="modal-title" id="myModalLabel">删除问答对</h4>
             </div>
             <div class="modal-body">
-                <p id="body">确定删除</p>
+                <p id="body">确定删除？</p>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label for="">ElasticSearch_Id</label>
+                    <textarea id="del_es_id" class="form-control" placeholder="ElasticSearch_Id"></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="">问题</label>
+                    <textarea id="del_question" class="form-control" placeholder="问题描述"></textarea>
+                </div>
+{#                <div class="form-group">#}
+{#                    <label for="">答案</label>#}
+{#                    <textarea id="edit_answer" class="form-control" placeholder="请输入答案"></textarea>#}
+{#                </div>#}
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
-                <button type="button" class="btn btn-primary">
-                    <a href="javascript:;" onclick="isDelete({{ qa.pk }})">确定</a>
-                </button>
+                <button id="del_btn" type="button" class="btn btn-primary">确定</button>
             </div>
         </div>
     </div>
@@ -167,19 +193,88 @@
 
 {% block script %}
 <script type="text/javascript">
+    {#function search() {#}
+    {#    var selectType = $("#search_type"); // 取到复选框#}
+    {#    var contentTex = $("#search_content");#}
+    {#    q_type = selectType.val();#}
+    {#    content = contentTex.val();#}
+    {#    console.log(q_type);#}
+    {#    console.log(content);#}
+    {#    if (content == '') {#}
+	{#			alert("请先输入搜索关键词哦~");#}
+	{#			return;#}
+	{#		}#}
+    {##}
+    {#    $.post("{% url 'manager:qa_search' 1 %}", {#}
+    {#        type: q_type,#}
+    {#        content: content,#}
+    {#        csrfmiddlewaretoken: '{{ csrf_token }}'#}
+    {#    }, function (result) {#}
+	{#			$.rende(result);#}
+    {#    })#}
+    {#}#}
+
     function edit(id, question) {
-        console.log(id)
-        console.log(question)
-        $("#es_edit_id").val(id);
+        console.log(id);
+        console.log(question);
+        {#console.log(answer)#}
+        $("#edit_es_id").val(id);
         $("#edit_question").val(question);
         {#$("#edit_answer").val(answer);#}
     }
-    function del(id) {
+    function del(id, question) {
         console.log(id)
-        $("#body").text('确定删除id为' + id + '的这条QA对吗？');
+        console.log(question)
+        $("#del_es_id").val(id);
+        $("#del_question").val(question);
+        $("#body").text('确定删除ES_ID为' + id + '的这条QA对吗？');
     }
+
     function isDelete(pk) {
         window.location = "/manager/qa_delete/pk=" + pk;
     }
+
+    $(function () {
+        var createBtn = $("#create_btn"); // 取到新增-确定按钮
+        var create_question = $("#create_question");
+        var create_answer = $("#create_answer");
+        var create_subjec = $("#create_subjec");
+        var create_link = $("#create_link");
+
+		var delBtn = $("#del_btn"); // 取到删除-确定按钮
+        var del_es_id = $("#del_es_id"); // 取到id
+
+        createBtn.click(function () {
+		    new_question = create_question.val();
+		    new_answer = create_answer.val();
+		    new_subject = create_link.val();
+            new_link = create_link.val();
+
+		    console.log(new_question);
+            console.log(new_answer);
+            console.log(new_subject);
+            console.log(new_link);
+            $.post("{% url 'manager:qa_create' %}", {
+                question: new_question,
+                answer: new_answer,
+                subject: new_subject,
+                link: new_link,
+                csrfmiddlewaretoken: '{{ csrf_token }}'
+                }, function (result) {
+				alert(result)
+                window.location.reload();
+            })
+	    })
+
+		delBtn.click(function () {
+		    del_es_id_val = del_es_id.val();
+		    console.log(del_es_id_val);
+            $.post("{% url 'manager:qa_delete' %}", {del_es_id: del_es_id_val, csrfmiddlewaretoken: '{{ csrf_token }}' }, function (result) {
+				alert(result);
+                window.location.reload();
+            })
+	    })
+	})
+
 </script>
 {% endblock %}
