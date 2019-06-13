@@ -21,16 +21,21 @@ class QASearch(object):
         #     self.es.indices.create(index = self.index, ignore = 400)
         self.es.indices.put_mapping(index=self.index, body=self.mapping)
 
-    def insert_from_json_str(self, json_data):
+    def insert_from_mem(self, datas):
+        '''
+        使用QA生成算法传过来的datas插入es
+        :param datas: QA生成算法生成的数据
+        :return: 插入是否成功
+        '''
         try:
-            for data in json_data:
+            for data in datas:
                 self.es.index(index=self.index, body=data)
             return True
         except:
             return False
 
-    def insert_from_file(self, filepath):
-        with open(filepath, 'r') as f:
+    def insert_from_file(self, file_path):
+        with open(file_path, 'r') as f:
             datas = json.load(f)
         for data in datas:
             self.es.index(index=self.index, body=data)
