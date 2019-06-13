@@ -2,21 +2,12 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="d042cb49-4a7d-4d1d-9c64-da34ed6fb2ad" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/manager/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/manager/urls.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/manager/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/manager/views.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/py/HuaweiCloud.py" beforeDir="false" afterPath="$PROJECT_DIR$/py/HuaweiCloud.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/py/QAGeneration.py" beforeDir="false" afterPath="$PROJECT_DIR$/py/QAGeneration.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/py/QASearch.py" beforeDir="false" afterPath="$PROJECT_DIR$/py/QASearch.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/py/QA_pairs_compute.json" beforeDir="false" afterPath="$PROJECT_DIR$/py/QA_pairs_compute.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/static/manager/upload/专属主机上云服务器的生命周期批量管理.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/static/manager/upload/专属主机上云服务器的规格变更.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/manager/base.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/manager/base.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/manager/qa_generate.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/manager/qa_generation.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/manager/qa_generation.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/manager/qa_generation.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/templates/manager/qa_management.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/manager/qa_management.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/manager/qa_search.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/manager/qa_search.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/manager/upload_file.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/manager/upload_file.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/user/chat.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/user/chat.html" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -38,8 +29,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/py/QASearch.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="331">
-              <caret line="30" selection-start-line="30" selection-end-line="30" />
+            <state relative-caret-position="124">
+              <caret line="23" column="23" selection-start-line="23" selection-start-column="8" selection-end-line="23" selection-end-column="23" />
               <folding>
                 <element signature="e#0#39#0" expanded="true" />
               </folding>
@@ -50,17 +41,17 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/templates/manager/qa_management.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="243">
-              <caret line="242" selection-start-line="242" selection-end-line="242" />
+            <state relative-caret-position="175">
+              <caret line="171" column="38" selection-start-line="171" selection-start-column="38" selection-end-line="171" selection-end-column="38" />
             </state>
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="false">
+      <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/templates/manager/qa_generation.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="262">
-              <caret line="84" selection-start-line="84" selection-end-line="84" />
+            <state relative-caret-position="224">
+              <caret line="73" column="45" lean-forward="true" selection-start-line="73" selection-start-column="45" selection-end-line="73" selection-end-column="45" />
             </state>
           </provider>
         </entry>
@@ -68,8 +59,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/templates/manager/user_management.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="307">
-              <caret line="132" column="35" selection-start-line="132" selection-start-column="35" selection-end-line="132" selection-end-column="35" />
+            <state relative-caret-position="314">
+              <caret line="155" column="13" lean-forward="true" selection-start-line="155" selection-start-column="13" selection-end-line="155" selection-end-column="13" />
             </state>
           </provider>
         </entry>
@@ -86,8 +77,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/manager/views.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="371">
-              <caret line="387" column="26" selection-start-line="387" selection-start-column="26" selection-end-line="387" selection-end-column="26" />
+            <state relative-caret-position="319">
+              <caret line="358" column="22" lean-forward="true" selection-start-line="358" selection-start-column="22" selection-end-line="358" selection-end-column="22" />
               <folding>
                 <element signature="e#0#35#0" expanded="true" />
               </folding>
@@ -95,11 +86,11 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/templates/user/chat.html">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="345">
-              <caret line="15" column="5" lean-forward="true" selection-start-line="15" selection-start-column="5" selection-end-line="15" selection-end-column="5" />
+              <caret line="15" column="5" selection-start-line="15" selection-start-column="5" selection-end-line="15" selection-end-column="5" />
             </state>
           </provider>
         </entry>
@@ -119,8 +110,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/py/HuaweiCloud.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="645">
-              <caret line="292" column="23" selection-start-line="292" selection-start-column="23" selection-end-line="292" selection-end-column="23" />
+            <state relative-caret-position="884">
+              <caret line="299" column="23" lean-forward="true" selection-start-line="299" selection-start-column="23" selection-end-line="299" selection-end-column="23" />
               <folding>
                 <element signature="e#15#24#0" expanded="true" />
               </folding>
@@ -131,8 +122,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/py/QAGeneration.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="351">
-              <caret line="537" column="13" selection-start-line="537" selection-start-column="13" selection-end-line="537" selection-end-column="13" />
+            <state relative-caret-position="388">
+              <caret line="535" column="12" selection-start-line="535" selection-start-column="12" selection-end-line="535" selection-end-column="12" />
             </state>
           </provider>
         </entry>
@@ -155,6 +146,7 @@
       <find>dele</find>
       <find>操作</find>
       <find>id=&quot;question&quot;</find>
+      <find>id=&quot;body&quot;</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -170,17 +162,17 @@
         <option value="$PROJECT_DIR$/templates/manager/user_management.html" />
         <option value="$PROJECT_DIR$/user/views.py" />
         <option value="$PROJECT_DIR$/templates/manager/qa_search.html" />
-        <option value="$PROJECT_DIR$/templates/manager/qa_management.html" />
         <option value="$PROJECT_DIR$/templates/manager/qa_generate.html" />
         <option value="$PROJECT_DIR$/templates/manager/base.html" />
+        <option value="$PROJECT_DIR$/templates/manager/upload_file.html" />
+        <option value="$PROJECT_DIR$/manager/urls.py" />
+        <option value="$PROJECT_DIR$/templates/user/chat.html" />
         <option value="$PROJECT_DIR$/py/HuaweiCloud.py" />
         <option value="$PROJECT_DIR$/py/QAGeneration.py" />
         <option value="$PROJECT_DIR$/py/QASearch.py" />
-        <option value="$PROJECT_DIR$/templates/manager/upload_file.html" />
-        <option value="$PROJECT_DIR$/manager/urls.py" />
         <option value="$PROJECT_DIR$/manager/views.py" />
+        <option value="$PROJECT_DIR$/templates/manager/qa_management.html" />
         <option value="$PROJECT_DIR$/templates/manager/qa_generation.html" />
-        <option value="$PROJECT_DIR$/templates/user/chat.html" />
       </list>
     </option>
   </component>
@@ -356,12 +348,12 @@
       <workItem from="1560399824556" duration="176000" />
       <workItem from="1560400012654" duration="118000" />
       <workItem from="1560405682318" duration="12191000" />
-      <workItem from="1560427709365" duration="2300000" />
+      <workItem from="1560427709365" duration="4154000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="32612000" />
+    <option name="totallyTimeSpent" value="34466000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -376,12 +368,12 @@
     <frame x="0" y="0" width="1440" height="900" extended-state="0" />
     <editor active="true" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" sideWeight="0.49910232" visible="true" weight="0.1881259" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" sideWeight="0.49910232" visible="true" weight="0.1881259" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Favorites" order="2" sideWeight="0.50089765" side_tool="true" weight="0.24964234" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" />
-      <window_info active="true" anchor="bottom" id="Run" order="2" visible="true" weight="0.32891566" />
+      <window_info anchor="bottom" id="Run" order="2" visible="true" weight="0.32891566" />
       <window_info anchor="bottom" id="Debug" order="3" weight="0.4" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
@@ -392,6 +384,7 @@
       <window_info anchor="bottom" id="Event Log" order="10" side_tool="true" />
       <window_info anchor="bottom" id="Python Console" order="11" weight="0.32891566" />
       <window_info anchor="bottom" id="Docker" order="12" show_stripe_button="false" />
+      <window_info anchor="right" x="0" y="0" width="310" height="700" id="Documentation" side_tool="true" weight="0.3297568" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
@@ -555,33 +548,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/py/HuaweiCloud.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="645">
-          <caret line="292" column="23" selection-start-line="292" selection-start-column="23" selection-end-line="292" selection-end-column="23" />
-          <folding>
-            <element signature="e#15#24#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/py/QAGeneration.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="351">
-          <caret line="537" column="13" selection-start-line="537" selection-start-column="13" selection-end-line="537" selection-end-column="13" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/py/QASearch.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="331">
-          <caret line="30" selection-start-line="30" selection-end-line="30" />
-          <folding>
-            <element signature="e#0#39#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/templates/manager/upload_file.html">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="-608">
@@ -599,41 +565,68 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/templates/manager/qa_management.html">
+    <entry file="file://$PROJECT_DIR$/templates/user/chat.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="243">
-          <caret line="242" selection-start-line="242" selection-end-line="242" />
+        <state relative-caret-position="345">
+          <caret line="15" column="5" selection-start-line="15" selection-start-column="5" selection-end-line="15" selection-end-column="5" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/templates/manager/qa_generation.html">
+    <entry file="file://$PROJECT_DIR$/py/HuaweiCloud.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="262">
-          <caret line="84" selection-start-line="84" selection-end-line="84" />
+        <state relative-caret-position="884">
+          <caret line="299" column="23" lean-forward="true" selection-start-line="299" selection-start-column="23" selection-end-line="299" selection-end-column="23" />
+          <folding>
+            <element signature="e#15#24#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/templates/manager/user_management.html">
+    <entry file="file://$PROJECT_DIR$/py/QAGeneration.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="307">
-          <caret line="132" column="35" selection-start-line="132" selection-start-column="35" selection-end-line="132" selection-end-column="35" />
+        <state relative-caret-position="388">
+          <caret line="535" column="12" selection-start-line="535" selection-start-column="12" selection-end-line="535" selection-end-column="12" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/py/QASearch.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="124">
+          <caret line="23" column="23" selection-start-line="23" selection-start-column="8" selection-end-line="23" selection-end-column="23" />
+          <folding>
+            <element signature="e#0#39#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/manager/views.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="371">
-          <caret line="387" column="26" selection-start-line="387" selection-start-column="26" selection-end-line="387" selection-end-column="26" />
+        <state relative-caret-position="319">
+          <caret line="358" column="22" lean-forward="true" selection-start-line="358" selection-start-column="22" selection-end-line="358" selection-end-column="22" />
           <folding>
             <element signature="e#0#35#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/templates/user/chat.html">
+    <entry file="file://$PROJECT_DIR$/templates/manager/user_management.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="345">
-          <caret line="15" column="5" lean-forward="true" selection-start-line="15" selection-start-column="5" selection-end-line="15" selection-end-column="5" />
+        <state relative-caret-position="314">
+          <caret line="155" column="13" lean-forward="true" selection-start-line="155" selection-start-column="13" selection-end-line="155" selection-end-column="13" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/templates/manager/qa_management.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="175">
+          <caret line="171" column="38" selection-start-line="171" selection-start-column="38" selection-end-line="171" selection-end-column="38" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/templates/manager/qa_generation.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="224">
+          <caret line="73" column="45" lean-forward="true" selection-start-line="73" selection-start-column="45" selection-end-line="73" selection-end-column="45" />
         </state>
       </provider>
     </entry>
