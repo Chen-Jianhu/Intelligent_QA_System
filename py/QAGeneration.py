@@ -4,7 +4,7 @@ import json
 from pyltp import * 
 
 
-LTP_DATA_DIR = '../ltp_data_v3.4.0'  # ltp模型目录的路径
+LTP_DATA_DIR = '~/qa_data/ltp_data_v3.4.0'  # ltp模型目录的路径
 
 par_model_path = os.path.join(LTP_DATA_DIR, 'parser.model')  # 依存句法分析模型路径，模型名称为`parser.model`
 pos_model_path = os.path.join(LTP_DATA_DIR, 'pos.model')  # 词性标注模型路径，模型名称为`pos.model`
@@ -511,17 +511,14 @@ class QAGeneration:
             result = True
       return result
 
-   def run(self, json_path):
+   def run(self, json_data):
       """
       读取一个 网页解析得到的json 文件
       输出一个 问答对形式的json 文件
       """
-      with open(json_path, 'r') as f:
-         datas = json.load(f)
-
       QA_pairs = []
 
-      for data in datas:
+      for data in json_data:
          title = data["title"].strip()
          if title == "":
             # 如果没能获取到 title，选取主题词第一个作为 title
@@ -534,9 +531,10 @@ class QAGeneration:
          else:
             QA_pairs.extend(self.Normal_title(title, data))
             QA_pairs.extend(self.Normal_subtitle(title, data))
-      
-      with open("QA_pairs_output.json", "w", encoding = "utf-8") as f:
-         f.write(json.dumps(QA_pairs, ensure_ascii=False, indent=2))
+
+      json_str = json.dumps(QA_pairs, ensure_ascii=False, indent=2)
+      # with open("QA_pairs_output.json", "w", encoding = "utf-8") as f:
+      #    f.write(json.dumps(QA_pairs, ensure_ascii=False, indent=2))
       return QA_pairs
 
 if __name__ == "__main__":
