@@ -163,17 +163,17 @@
                 </button>
                 <h4 class="modal-title" id="myModalLabel">删除问答对</h4>
             </div>
-            <div class="modal-body">
-                <p id="body">确定删除？</p>
-            </div>
+{#            <div class="modal-body">#}
+{#                <p id="body">确定删除？</p>#}
+{#            </div>#}
             <div class="modal-body">
                 <div class="form-group">
                     <label for="">ElasticSearch_Id</label>
-                    <textarea id="del_es_id" class="form-control" placeholder="ElasticSearch_Id"></textarea>
+                    <textarea disabled id="del_es_id" class="form-control" placeholder="ElasticSearch_Id"></textarea>
                 </div>
                 <div class="form-group">
                     <label for="">问题</label>
-                    <textarea id="del_question" class="form-control" placeholder="问题描述"></textarea>
+                    <textarea disabled id="del_question" class="form-control" placeholder="问题描述"></textarea>
                 </div>
 {#                <div class="form-group">#}
 {#                    <label for="">答案</label>#}
@@ -227,7 +227,7 @@
         console.log(question)
         $("#del_es_id").val(id);
         $("#del_question").val(question);
-        $("#body").text('确定删除ES_ID为' + id + '的这条QA对吗？');
+        {#$("#body").text('确定删除ES_ID为' + id + '的这条QA对吗？');#}
     }
 
     function isDelete(pk) {
