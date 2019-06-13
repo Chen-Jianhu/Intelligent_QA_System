@@ -16,10 +16,18 @@ class QASearch(object):
             }
         }
         # self.es.indices.delete(index= self.index, ignore=[400, 404])
-        self.es.indices.create(index= self.index, ignore=400)
+        self.es.indices.create(index=self.index, ignore=400)
         # if self.es.indices.exists(index = self.index) is not True:
         #     self.es.indices.create(index = self.index, ignore = 400)
         self.es.indices.put_mapping(index=self.index, body=self.mapping)
+
+    def insert_from_json_str(self, json_data):
+        try:
+            for data in json_data:
+                self.es.index(index=self.index, body=data)
+            return True
+        except:
+            return False
 
     def insert_from_file(self, filepath):
         with open(filepath, 'r') as f:
@@ -28,13 +36,21 @@ class QASearch(object):
             self.es.index(index=self.index, body=data)
 
     def insert_one_data(self, data):
-        self.es.index(index=self.index, body=data)
+        try:
+            self.es.index(index=self.index, body=data)
+            return True
+        except:
+            return False
 
     def delete_one_data(self, id):
         """
         根据 id 删除数据
         """
-        self.es.delete(index=self.index, id = id)
+        try:
+            self.es.delete(index=self.index, id = id)
+            return True
+        except:
+            return False
 
     def update_one_date(self, new_data, id):
         """
@@ -57,7 +73,7 @@ class QASearch(object):
             return result["hits"]["hits"][0]['_source']['answer'], result["hits"][
                 "hits"][0]['_source']['link']
         except:
-            print("Not Found!")
+            print("ES Not Found!")
             return -1
     
     def search_datas_by_question(self, content):
@@ -72,8 +88,7 @@ class QASearch(object):
             # print(result)
             return result["hits"]["hits"]
         except:
-            print("Not Found!")
-            return -1
+            return []
    
     def search_datas_by_answer(self, content):
         """
@@ -85,8 +100,7 @@ class QASearch(object):
             result = self.es.search(index=self.index, body=dsl)
             return result["hits"]["hits"]
         except:
-            print("Not Found!")
-            return -1
+            return []
         
     def get_all_data(self):
         query_json = {"match": {"_index": self.index}}
@@ -105,3 +119,9 @@ class QASearch(object):
             res = self.es.scroll(scroll_id=scroll_id, scroll='5m') 
             all_datas += res["hits"]["hits"]
         return all_datas
+
+
+if __name__ == '__main__':
+    Q = QASearch(index='qa_pairs')
+    # Q.es.indices.delete(index=Q.index)
+    Q.insert_from_file('./QA_pairs_compute.json')
