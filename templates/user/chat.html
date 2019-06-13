@@ -3,76 +3,76 @@
 
 {% block style %}
 <style type="text/css">
-	* {
-		margin: 0;
-		padding: 0;
-	}
+    *{
+        margin: 0;
+        padding: 0;
+        background:#FFFFFF;
+    }
+    #box{
+        width:600px;
+        height:500px;
+        margin: 80px auto;
+        border:1px solid #666;
+    }
+    .talk_show{
+        width:580px;
+        height: 420px;
+        margin: 10px auto;
+        border: 1px solid #666666;
+        overflow: auto;
+    }
+    .talk_input{
+        width:580px;
+        margin: 10px auto;
 
-	#box {
-		width: 600px;
-		height: 500px;
-		margin: 100px auto;
-		border: 1px solid #666;
-	}
-
-	.talk_show {
-		width: 580px;
-		height: 420px;
-		margin: 10px auto;
-		border: 1px solid #666666;
-		overflow: auto;
-	}
-
-	.talk_input {
-		width: 580px;
-		margin: 10px auto;
-	}
-
-	.whotalk {
-		width: 80px;
-		height: 30px;
-		float: left;
-	}
-
-	.talk_word {
-		width: 420px;
-		height: 26px;
-		margin-left: 10px;
-		float: left;
-	}
-
-	.talk_sub {
-		width: 56px;
-		height: 30px;
-		float: left;
-		margin-left: 10px;
-	}
-
-	.atalk {
-		margin: 10px;
-	}
-
-	.atalk span {
-		background: #1f83c6;
-		border-radius: 10px;
-		display: inline-block;
-		padding: 5px 10px;
-		color: #fff;
-	}
-
-	.btalk {
-		margin: 10px;
-		text-align: right;
-
-	}
-
-	.btalk span {
-		background: #eb802f;
-		border-radius: 10px;
-		display: inline-block;
-		padding: 5px 10px;
-		color: #fff;
-	}
+    }
+    .whotalk{
+        width: 80px;
+        height: 30px;
+        float: left;
+    }
+    .talk_word{
+        width: 480px;
+        height: 26px;
+        margin-left: 10px;
+        margin-top:5px;
+        float: left;
+        color:rgb(255,255,255);
+    }
+    .talk_sub{
+        width: 56px;
+        height: 30px;
+        float: left;
+        margin-left: 10px;
+        margin-top:5px;
+        background-color:rgb(190,190,190);
+    }
+    .atalk{
+        width:400px;
+        margin: 10px 50px 20px 10px;
+    }
+    .atalk span{
+        background: #1f83c6;
+        border-radius: 10px;
+        display:inline-block;
+        padding: 5px 10px;
+        color: #fff;
+    }
+    .btalk{
+        width:488px;
+        margin: 20px 0px 30px 20px;
+        text-align: left;
+    }
+    .btalk span{
+        background: #eb802f;
+        margin-right:5px;
+        border-radius: 10px;
+        display:inline-block;
+        padding: 5px 10px;
+        color: #fff;
+        margin-bottom:30px;
+        float:right;
+    }
 </style>
 {% endblock %}
 
@@ -109,6 +109,12 @@
 		var $text = $("#talkwords"); //取到文本框里面的内容
 		var $sendBtn = $("#talksub"); //取到点击发送的按钮
 
+        $("body").keydown(function() {
+            if (event.keyCode == "13") {//keyCode=13是回车键
+                $sendBtn.click();
+            }
+        });
+
 		$sendBtn.click(function () {
 			var sText = $text.val();
 			if (sText == '') {
@@ -117,11 +123,13 @@
 			}
 			$.post("{% url 'user:get_answer' %}", { user_question: sText, csrfmiddlewaretoken: '{{ csrf_token }}' }, function (result) {
 				console.log(result)
-				// $mesBox.html($mesBox.html() + '<br>'+sText+'<br>' + '{{answer}}');
-				$mesBox.html($mesBox.html() + '<div class="btalk"><span> ' + sText + ' </span></div>')
-				$mesBox.html($mesBox.html() + '<div class="atalk"><span>小科: ' + result + ' </span></div>')
-		})
-	})
+                //$mesBox.html($mesBox.html() + '<br>'+sText+'<br>' + '{{answer}}');
+                $mesBox.html($mesBox.html()+'<div class="btalk " style="margin-top:18px;display:inline-block;vertical-align:top"><span>'+sText+' </span></div>'+'<div style=" width:50px;height:50px;display:inline-block;vertical-align:top;"> <img src="{% static 'img/user.gif' %}" style="border-radius: 10px; margin: 10px" height="45" width="45" ></div>')
+                $mesBox.html($mesBox.html()+'<div style="margin-left:10px;width:50px;height:50px;display:inline-block;vertical-align:top;"> <img src="{% static 'img/xiaoke.png' %}" style="border-radius: 10px; margin: 5px 5px" height="45" width="45" ></div>' +'<div class="atalk " style="display:inline-block;vertical-align:top;margin-top:18px;"><span>小科: '+result+' </span></div>')
+
+                $text.val("");
+            })
+	    })
 	})
 </script>
 {% endblock%}
