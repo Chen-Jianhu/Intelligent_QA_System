@@ -14,6 +14,10 @@
 		#logo {
 			padding: 6px 0 4px 25px;
 		}
+        .navbar-fixed-bottom{
+            background:#f8f8f8;
+            height: 40px;
+        }
 	</style>
 	{% block style %}
 	{% endblock %}
@@ -98,14 +102,15 @@
 		</div>
 	</div>
 
-	<footer class="navbar-fixed-bottom" style="margin-bottom:30px">
-		<p class="text-center">
-			&copy; 2018-2019 | Powered by
-			<a href="https://www.djangoproject.com/">Django</a> |
-			<a href="{% url 'user:index' %}">首页</a> |
-			<a href="{% url 'manager:index' %}">后台管理</a> |
-			<a href="https://sse.ustc.edu.cn/">Contact Us</a>
-		</p>
+
+	<footer class="navbar-fixed-bottom" >
+            <p class="text-center" style="margin: 10px">
+                &copy; 2018-2019 | Powered by
+                <a href="https://www.djangoproject.com/">Django</a> |
+                <a href="{% url 'user:index' %}">首页</a> |
+                <a href="{% url 'manager:index' %}">后台管理</a> |
+                <a href="https://sse.ustc.edu.cn/">Contact Us</a>
+		    </p>
 	</footer>
 
 	{% comment %} 退出的模态框 {% endcomment %}
