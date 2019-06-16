@@ -18,19 +18,23 @@
     <tbody>
         {% for file in this_page_list %}
         <tr>
-            {% for num, fname in file.items %}
-            <td>{{ num }}</td>
-            <td>{{ fname }}</td>
+            <td>{{ file.i }}</td>
+            <td>
+                {% if file.is_generate %}
+                    <p style="color: #5da4a7">{{ file.file_name }}</p>
+                {% else %}
+                    {{ file.file_name }}
+                {% endif %}
+            </td>
             <td>
                 <button class="btn btn-success btn-sm" data-toggle="modal" data-target="#generate"
-                        onclick="generate('{{ fname }}')">
+                        onclick="generate('{{ file.file_name }}')">
                     <span class="glyphicon glyphicon-play"></span>
                 </button>
                 <button class="btn btn-danger btn-sm" data-toggle="modal" data-target="#delete_file"
-                    onclick="delete_file('{{ fname }}')"><span class="glyphicon glyphicon-trash"></span>
+                    onclick="delete_file('{{ file.file_name }}')"><span class="glyphicon glyphicon-trash"></span>
                 </button>
             </td>
-            {% endfor %}
         </tr>
         {% endfor %}
     </tbody>
@@ -91,6 +95,7 @@
     function generate(fname) {
         $.post("{% url 'manager:qa_generate' %}", {fname: fname, csrfmiddlewaretoken: '{{ csrf_token }}' }, function (result) {
             alert(result);
+            window.location.reload();
         })
     }
 
