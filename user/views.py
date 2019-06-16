@@ -137,7 +137,10 @@ def get_answer(request):
         # es.insert_from_file('./QA_pairs_compute.json')
         try:
             result, url = es.search_data(question)
-            answer = result + '\n答案链接：' + url
+            # answer = result.replace('\n', '<br>') + '<br>答案链接：' + '<a target="_blank" style="color:#FFFFFF" href=' + url + '>' + url
+            answer = result
+            if url:
+                answer += '<br>答案链接：' + '<a target="_blank" style="color:#FFFFFF" href=' + url + '>' + url + '</a>'
             print('[{}]调用es search'.format(time.ctime()))
         except:
             # 调用图灵机器人
