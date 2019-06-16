@@ -135,8 +135,13 @@ def qa_generation(request, index):
     }
     if mname != '未登录':
         # 获取上传文件列表
-        files  = os.listdir('./static/manager/upload')
-        file_list = [{i:file_name} for i, file_name in zip(range(1, len(files) + 1), files)]
+        files = os.listdir('./static/manager/upload')
+        # 记录是否生成
+        is_generation = []
+        for f in files:
+            is_g = f.startswith('(已生成)')
+            is_generation.append(is_g)
+        file_list = [{'i': i, 'file_name': file_name, 'is_generate': is_g} for i, file_name, is_g in zip(range(1, len(files) + 1), files, is_generation)]
         all_file = Paginator(file_list, 10)
         index_list = all_file.page_range # 页码列表
         if index == '' :
@@ -166,8 +171,9 @@ def qa_management(request, index):
             qa['id'] = i+1
             qa['es_id'] = qa.pop('_id')
             qa['source'] = qa.pop('_source')
-            qa['question'] = qa['source']['question']
-            qa['answer'] = qa['source']['answer']
+            qa['source']['link'] = qa['source']['link'].split('//')[-1]
+            # qa['question'] = qa['source']['question']
+            # qa['answer'] = qa['source']['answer']
 
         qa_all_page = Paginator(qa_data, 10)
         index_list = qa_all_page.page_range # 页码列表
@@ -190,12 +196,12 @@ def qa_generate(request):
         'name': mname,
     }
     if mname != '未登录':
-        file_path = ['./static/manager/upload/' + request.POST.get('fname'), ]
+        file_path = './static/manager/upload/' + request.POST.get('fname')
         print(file_path)
         # 调用华为云页面解析程序
         print('调用华为云页面解析程序')
         HW = HuaweiCloud()
-        parse_data = HW.parse_page(file_path)
+        parse_data = HW.parse_page([file_path, ])
         print(parse_data)
         # 调用生成算法
         print('调用QA生成算法')
@@ -207,6 +213,11 @@ def qa_generate(request):
         es = QASearch(index="qa_pairs")
         if es.insert_from_mem(new_qa_pairs):
             result = '本次共生成{}条QA对！'.format(len(new_qa_pairs))
+            # 生成成功后加上标识
+            file_split = file_path.split('/')
+            file_split[-1] = '(已生成)' + file_split[-1]
+            new_name = '/'.join(file_split)
+            os.rename(file_path, new_name)
         else:
             result = '生成QA对失败！'
     else:
