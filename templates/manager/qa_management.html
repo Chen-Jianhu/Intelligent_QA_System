@@ -30,42 +30,45 @@
 
 <div class="clearfix"></div>
 
-<table class="table table-striped table-bordered" style="margin-top: 20px;">
-    <thead>
-        <tr>
-            <th>序号</th>
-            <th>ES_ID</th>
-            <th>主题</th>
-            <th>问题</th>
-            <th>答案</th>
-            <th>链接</th>
-            <th>操作</th>
-        </tr>
-    </thead>
-    <tbody>
-        {% for qa in this_page_list %}
-        <tr>
-            <td>{{ qa.id }}</td>
-            <td>{{ qa.es_id }}</td>
-            <td>{{ qa.source.subject }}</td>
-            <td>{{ qa.source.question }}</td>
-            <td>{{ qa.source.answer }}</td>
-            <td>
-                <a href="https://support.huaweicloud.com/{{ qa.source.link }}" target="_blank">{{ qa.source.link }}</a>
-            </td>
-            <td>
-                <button class="btn btn-success btn-sm" data-toggle="modal" data-target="#edit"
-                    onclick="edit('{{ qa.es_id }}', '{{ qa.source.question }}')">
-                    <span class="glyphicon glyphicon-edit"></span>
-                </button>
-                <button class="btn btn-danger btn-sm" data-toggle="modal" data-target="#del" onclick="del('{{ qa.es_id }}', '{{ qa.source.question }}')">
-                    <span class="glyphicon glyphicon-trash"></span>
-                </button>
-            </td>
-        </tr>
-        {% endfor %}
-    </tbody>
-</table>
+    <div class="pre-scrollable" style="margin-top: 30px;">
+        <table class="table table-striped table-bordered" style="margin-top: 10px; table-layout: fixed;word-break: break-all;">
+            <thead>
+                <tr>
+                    <th width="5%" class="text-center">序号</th>
+                    <th width="9%" class="text-center">ES_ID</th>
+                    <th width="7%" class="text-center">主题</th>
+                    <th width="25%" class="text-center">问题</th>
+                    <th width="40%" class="text-center">答案</th>
+                    <th width="10%" class="text-center">链接</th>
+                    <th width="10%" class="text-center">操作</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for qa in this_page_list %}
+                <tr>
+                    <td class="text-center">{{ qa.id }}</td>
+                    <td class="text-center">{{ qa.es_id }}</td>
+                    <td class="text-center">{{ qa.source.subject }}</td>
+                    <td class="text-center">{{ qa.source.question }}</td>
+                    <td class="text-center">{{ qa.source.answer }}</td>
+                    <td class="text-center">
+                        <a href="https://support.huaweicloud.com/{{ qa.source.link }}" target="_blank">{{ qa.source.link }}</a>
+                    </td>
+                    <td class="text-center">
+                        <button class="btn btn-success btn-sm" data-toggle="modal" data-target="#edit"
+                            onclick="edit('{{ qa.es_id }}', '{{ qa.source.question }}')">
+                            <span class="glyphicon glyphicon-edit"></span>
+                        </button>
+                        <button class="btn btn-danger btn-sm" data-toggle="modal" data-target="#del" onclick="del('{{ qa.es_id }}', '{{ qa.source.question }}')">
+                            <span class="glyphicon glyphicon-trash"></span>
+                        </button>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
 
 <nav aria-label="Page navigation" class="pull-right">
     <ul class="pagination">
