@@ -130,3 +130,4 @@ if __name__ == '__main__':
     Q = QASearch(index='qa_pairs')
     # Q.es.indices.delete(index=Q.index)
     Q.insert_from_file('./QA_pairs_compute.json')
+    
