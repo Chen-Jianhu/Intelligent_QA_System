@@ -6,7 +6,7 @@
     *{
         margin: 0;
         padding: 0;
-        background:#FFFFFF;
+        background:#f8f8f8;
     }
     #box{
         width:600px;
@@ -24,7 +24,6 @@
     .talk_input{
         width:580px;
         margin: 10px auto;
-
     }
     .whotalk{
         width: 80px;
@@ -37,7 +36,7 @@
         margin-left: 10px;
         margin-top:5px;
         float: left;
-        color:rgb(255,255,255);
+        color:rgb(0,0,0);
     }
     .talk_sub{
         width: 56px;
@@ -79,7 +78,14 @@
 {% block content %}
 <div id="box">
 	<div class="talk_show" id="words">
-		<div class="atalk"><span>{{ answer|safe }}</span></div>
+        <div style="margin-left:10px;width:50px;height:50px;display:inline-block;vertical-align:top;">
+            <img src="{% static 'img/xiaoke.png' %}" style="border-radius: 10px; margin: 5px 5px" height="45" width="45" >
+            <span> &nbsp; &nbsp;小科 </span>
+        </div>
+        <div class="atalk " style="display:inline-block;vertical-align:top;margin-top:18px;">
+            <span> {{ answer|safe }} </span>
+         </div>
+{#		<div class="atalk"><span>{{ answer|safe }}</span></div>#}
 		{% comment %} <div class="btalk"><span>B说:还没呢</span></div> {% endcomment %}
 	</div>
 
@@ -124,10 +130,16 @@
 			$.post("{% url 'user:get_answer' %}", { user_question: sText, csrfmiddlewaretoken: '{{ csrf_token }}' }, function (result) {
 				console.log(result)
                 //$mesBox.html($mesBox.html() + '<br>'+sText+'<br>' + '{{answer}}');
-                $mesBox.html($mesBox.html()+'<div class="btalk " style="margin-top:18px;display:inline-block;vertical-align:top"><span>'+sText+' </span></div>'+'<div style=" width:50px;height:50px;display:inline-block;vertical-align:top;"> <img src="{% static 'img/user.gif' %}" style="border-radius: 10px; margin: 10px" height="45" width="45" ></div>')
-                $mesBox.html($mesBox.html()+'<div style="margin-left:10px;width:50px;height:50px;display:inline-block;vertical-align:top;"> <img src="{% static 'img/xiaoke.png' %}" style="border-radius: 10px; margin: 5px 5px" height="45" width="45" ></div>' +'<div class="atalk " style="display:inline-block;vertical-align:top;margin-top:18px;"><span>小科: '+result+' </span></div>')
+                $mesBox.html($mesBox.html()+'<div class="btalk " style="margin-top:18px;display:inline-block;vertical-align:top"><span>'+sText+' </span></div>'+'<div style=" width:50px;height:50px;display:inline-block;vertical-align:top;"> <img src="{% static 'img/user.gif' %}" style="border-radius: 10px; margin: 10px" height="45" width="45" ><span>{{ name }} &nbsp; </span></div>')
+                $mesBox.html($mesBox.html()+'<div style="margin-left:10px;width:50px;height:50px;display:inline-block;vertical-align:top;"> <img src="{% static 'img/xiaoke.png' %}" style="border-radius: 10px; margin: 5px 5px" height="45" width="45" ><span> &nbsp; &nbsp;小科</span></div>' +'<div class="atalk " style="display:inline-block;vertical-align:top;margin-top:18px;"><span>'+result+' </span></div>')
 
-                $text.val("");
+                $text.val(""); // 清空输入问题的输入框
+
+                // 将聊天框页面拉到最下方
+                {#var now = new Date();#}
+                var wordsBox = document.getElementById('words');
+                {#wordsBox.innerHTML = divBox.innerHTML + 'time_' + now.getTime() + '<br />';#}
+                wordsBox.scrollTop = wordsBox.scrollHeight;
             })
 	    })
 	})
