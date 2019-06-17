@@ -2,6 +2,7 @@ from django.contrib import admin
 from .models import *
 # Register your models here.
 
+
 # 自定义管理界面
 class UserInfoAdmin(admin.ModelAdmin):
     # 列表页属性==========================
