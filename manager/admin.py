@@ -3,6 +3,7 @@ from .models import *
 
 # Register your models here.
 
+
 # 自定义管理界面
 class QAAdmin(admin.ModelAdmin):
     # 列表页属性==========================
@@ -14,6 +15,7 @@ class QAAdmin(admin.ModelAdmin):
     search_fields = ['question']
     # 分页，分页框会出现在下侧
     list_per_page = 10
+
 
 class ManagerInfoAdmin(admin.ModelAdmin):
     # 列表页属性==========================
@@ -27,4 +29,4 @@ class ManagerInfoAdmin(admin.ModelAdmin):
     list_per_page = 10
 
 admin.site.register(ManagerInfo, ManagerInfoAdmin)
-admin.site.register(QA, QAAdmin)
+# admin.site.register(QA, QAAdmin)
