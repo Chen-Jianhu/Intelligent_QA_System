@@ -28,24 +28,21 @@
         </script>
     
     {% else %}
-
-        {% if login_result %}
-            <script>
-                window.location.href = "{% url 'manager:index' %}";
-            </script>
-        {% else %}
-            <script type="text/javascript">
-                $(function(){
-                    $("#erro_title").text('{{ login_info }}')
-                    $("#error").modal({
+        <script type="text/javascript">
+            $(function(){
+                    $("#info_detail").text('{{ login_info }}')
+                    $("#info_modal").modal({
                         keyboard: true
                     });
                     setTimeout(function () {
-                        $("#error").modal('hide');
-                    }, 1100);
+                        $("#info_modal").modal('hide');
+                    }, 1600);
                 });
-            </script> 
-        {% endif %}
+            {% if login_result %}
+                window.location.href = "{% url 'manager:index' %}";
+            {% endif %}
+        </script>
+
 
     {% endif %}
 
