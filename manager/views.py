@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from django.http import HttpResponse
 from django.conf import settings
-from django.core.paginator import Paginator # 分页
+from django.core.paginator import Paginator  # 分页
 from .models import *
 from user.models import *
 from py import QAGeneration
@@ -215,9 +215,10 @@ def qa_generate(request):
             result = '本次共生成{}条QA对！'.format(len(new_qa_pairs))
             # 生成成功后加上标识
             file_split = file_path.split('/')
-            file_split[-1] = '(已生成)' + file_split[-1]
-            new_name = '/'.join(file_split)
-            os.rename(file_path, new_name)
+            if not file_split[-1].startswith('(已生成)'):
+                file_split[-1] = '(已生成)' + file_split[-1]
+                new_name = '/'.join(file_split)
+                os.rename(file_path, new_name)
         else:
             result = '生成QA对失败！'
     else:
