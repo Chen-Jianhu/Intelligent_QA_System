@@ -15,41 +15,43 @@
         </div>
     </div>
 </form>
+
 <button class="btn btn-success pull-right" data-toggle="modal" data-target="#add">新增用户</button>
+
 <div class="clearfix"></div>
 
 <table class="table table-striped table-bordered" style="margin-top: 20px;">
     <thead>
         <tr>
-            <th width="7%">序号</th>
-            <th width="8%">头像</th>
-            <th width="20%">用户名</th>
-            <th width="20%">密码</th>
-            <th width="7%">性别</th>
-            <th width="8%">年龄</th>
-            <th width="20%">邮箱</th>
-            <th width="10%">操作</th>
+            <th width="7%" class="text-center">Id</th>
+            <th width="8%" class="text-center">头像</th>
+            <th width="20%" class="text-center">用户名</th>
+            <th width="20%" class="text-center">密码</th>
+            <th width="7%" class="text-center">性别</th>
+            <th width="8%" class="text-center">年龄</th>
+            <th width="20%" class="text-center">邮箱</th>
+            <th width="10%" class="text-center">操作</th>
         </tr>
     </thead>
     <tbody>
         {% for user in this_page_list %}
         <tr>
-            <td>{{ user.pk }}</td>
-            <td>
+            <td class="text-center">{{ user.pk }}</td>
+            <td class="text-center">
                 <img src="{{ user.img_path }}" width="20px">
             </td>
-            <td>{{ user.name }}</td>
-            <td>{{ user.pwd }}</td>
-            <td>{{ user.sex }}</td>
-            <td>{{ user.age }}</td>
-            <td>{{ user.email }}</td>
-            <td>
+            <td class="text-center">{{ user.name }}</td>
+            <td class="text-center">{{ user.pwd }}</td>
+            <td class="text-center">{{ user.sex }}</td>
+            <td class="text-center">{{ user.age }}</td>
+            <td class="text-center">{{ user.email }}</td>
+            <td class="text-center">
                 <button class="btn btn-success btn-sm" data-toggle="modal" data-target="#edit"
                     onclick="edit('{{ user.name }}','{{ user.pwd }}')">
                     <span class="glyphicon glyphicon-edit"></span>
                 </button>
                 <button class="btn btn-danger btn-sm" data-toggle="modal" data-target="#del"
-                    onclick="del('{{ user.pk }}')">
+                    onclick="del('{{ user.pk }}', '{{ user.name }}')">
                     <span class="glyphicon glyphicon-trash"></span>
                 </button>
             </td>
@@ -57,6 +59,7 @@
         {% endfor %}
     </tbody>
 </table>
+
 <nav aria-label="Page navigation" class="pull-right">
     <ul class="pagination">
         <li>
@@ -93,16 +96,32 @@
             <div class="modal-body">
                 <div class="form-group">
                     <label for="">用户名</label>
-                    <input type="text" name="account" class="form-control" placeholder="请输入用户名" autocomplete="off">
+                    <input type="text" id="name" class="form-control" placeholder="请输入用户名" autocomplete="off">
                 </div>
                 <div class="form-group">
                     <label for="">密码</label>
-                    <input type="text" name="pwd" class="form-control" placeholder="请输入密码" autocomplete="off">
+                    <input type="text" id="pwd" class="form-control" placeholder="请输入密码" autocomplete="off">
+                </div>
+                <div class="form-group">
+                    <label for="">性别</label>
+{#                    <input type="text" name="pwd" class="form-control" placeholder="请输入性别" autocomplete="off">#}
+                    <select id="sex" class="form-control">
+                        <option value="True">男</option>
+                        <option value="False">女</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="">年龄</label>
+                    <input type="text" id="age" class="form-control" placeholder="请输入年龄" autocomplete="off">
+                </div>
+                <div class="form-group">
+                    <label for="">邮箱</label>
+                    <input type="text" id="email" class="form-control" placeholder="请输入邮箱" autocomplete="off">
                 </div>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
-                <button type="button" class="btn btn-primary">确定</button>
+                <button type="button" id="add_btn" class="btn btn-primary">确定</button>
             </div>
         </div>
     </div>
@@ -147,11 +166,21 @@
                 <h4 class="modal-title" id="myModalLabel">删除用户</h4>
             </div>
             <div class="modal-body">
-                <p id="body">确定删除</p>
+                <div class="form-group">
+                    <p id="body"></p>
+                </div>
+                <div class="form-group">
+                    <label for="">序号</label>
+                    <textarea disabled id="del_id" class="form-control" placeholder="id"></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="">用户名</label>
+                    <textarea disabled id="del_name" class="form-control" placeholder="用户名"></textarea>
+                </div>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
-                <button type="button" class="btn btn-primary">确定</button>
+                <button id="del_btn" type="button" class="btn btn-primary">确定</button>
             </div>
         </div>
     </div>
@@ -166,8 +195,80 @@
         $("#account").val(name);
         $("#pwd").val(pwd);
     }
-    function del(id) {
-        $("#body").text('确定删除第' + id + '条吗？');
+
+    function del(id, name) {
+        $("#body").text('确定此用户吗？');
+        $("#del_id").val(id);
+        $("#del_name").val(name);
     }
+
+    $(function () {
+        var addBtn = $("#add_btn"); // 取到新增-确定按钮
+        var name = $("#name");
+        var pwd = $("#pwd");
+        var sex = $("#sex");
+        var age = $("#age");
+        var email = $("#email");
+
+        addBtn.click(function () {
+            name_val = name.val();
+            pwd_val_ = pwd.val();
+            sex_val = sex.val();
+            age_val = age.val();
+            email_val = email.val()
+
+            console.log(name_val);
+            console.log(pwd_val_);
+            console.log(sex_val);
+            console.log(age_val);
+            console.log(email_val);
+
+            if(name_val.length<5 || pwd_val_.length<5){
+                alert('用户名和密码长度必须大于5哦~')
+                return;
+            }
+
+            var reNumber = /^\d+$/;
+            if(!reNumber.test(age_val)){
+                alert('年龄必须为数字哦~');
+                age.val("");
+                return;
+            }
+
+            var reEmail = /^[a-zA-Z0-9_-]+@([a-zA-Z0-9]+\.)+(com|cn|net|org)$/;
+            if(!reEmail.test(email_val)){
+                alert('邮箱格式不正确~（仅支持以com|cn|net|org为后缀的邮箱）');
+                email.val("");
+                return ;
+            }
+
+            $.post("{% url 'manager:user_create' %}", {
+                name: name_val,
+                pwd: pwd_val_,
+                sex: sex_val,
+                age: age_val,
+                email: email_val,
+                csrfmiddlewaretoken: '{{ csrf_token }}'
+                }, function (result) {
+                    alert(result);
+                window.location.reload();
+            })
+        });
+
+        delBtn = $("#del_btn");
+        var del_id = $("#del_id"); // 取到id
+
+        delBtn.click(function () {
+		    del_id_val = del_id.val();
+		    console.log(del_id);
+            $.post("{% url 'manager:user_delete' %}", {id: del_id_val, csrfmiddlewaretoken: '{{ csrf_token }}' }, function (result) {
+				alert(result);
+                window.location.reload();
+            })
+	    })
+    })
+
+
+
 </script>
 {% endblock %}
