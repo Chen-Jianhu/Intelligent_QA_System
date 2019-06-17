@@ -307,7 +307,7 @@ def qa_delete(request):
         'name': mname,
     }
     # 获取需要删除的QA对的es_id
-    del_es_id = request.POST.get('del_es_id', None),
+    del_es_id = request.POST.get('del_es_id', None)
     if mname != '未登录':
         # 调用es search
         es = QASearch(index="qa_pairs")
@@ -368,9 +368,19 @@ def user_delete(request):
         'page_title': '删除用户',
         'name': mname,
     }
+    # 获取需要删除的QA对的es_id
+    del_id = request.POST.get('id', None)
     if mname != '未登录':
-        pass
-    return HttpResponse('开发中')
+        try:
+            need_del_user = UserInfo.manager.get(pk=del_id)
+        except:
+            result = '删除失败,未找在数据库到此用户!'
+        else:
+            need_del_user.delete()
+            result = '删除成功！'
+    else:
+        result = '后台管理操作需要先登录管理员账户！'
+    return HttpResponse(result)
 
 
 def user_update(request):
@@ -398,6 +408,38 @@ def delete_file(request):
             result = '删除成功！'
         else:
             result = '删除失败！'
+    else:
+        result = '后台管理操作需要先登录管理员账户！'
+    return HttpResponse(result)
+
+
+def user_create(request):
+    mname = request.session.get('mname', '未登录')
+    context = {
+        'page_title': '新增用户',
+        'name': mname,
+    }
+    if mname != '未登录':
+        account = {
+            'name': request.POST.get('name', None),
+            'pwd': request.POST.get('pwd', None),
+            'sex': request.POST.get('sex', None),
+            'age': request.POST.get('age', None),
+            'email': request.POST.get('email', None),
+            'img_path': None,
+        }
+        try:
+            UserInfo.manager.filter(name=account['name'])[0]
+        except IndexError:
+            # save user info to db
+            try:
+                new_user = UserInfo.manager.create(account)
+                new_user.save()
+                result = '新增用户成功！'
+            except :
+                result = '创建失败！'
+        else:
+            result = '错误：该用户名（{}）已存在！'.format(account['name'])
     else:
         result = '后台管理操作需要先登录管理员账户！'
     return HttpResponse(result)
