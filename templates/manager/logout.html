@@ -3,13 +3,13 @@
 {% block script %}
     <script type="text/javascript">
         $(function(){
-            $("#logout_title").text('{{ logout_info }}')
-            $("#logout").modal({
+            $("#info_detail").text('{{ logout_info }}')
+            $("#info_modal").modal({
                 keyboard: true
             });
             setTimeout(function () {
-                $("#logout").modal('hide');
-            }, 700);
+                $("#info_modal").modal('hide');
+            }, 1000);
         });
     </script> 
 {% endblock %}
