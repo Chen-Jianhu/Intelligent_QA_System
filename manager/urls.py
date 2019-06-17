@@ -29,4 +29,5 @@ urlpatterns = [
     url(r'^user_management/(?P<index>[0-9]*)', views.user_management, name='user_management'),
     url(r'^user_delete/', views.user_delete, name='user_delete'),
     url(r'^user_update/', views.user_update, name='user_update'),
+    url(r'^user_create/', views.user_create, name='user_create'),
 ]
