@@ -47,7 +47,7 @@
             <td class="text-center">{{ user.email }}</td>
             <td class="text-center">
                 <button class="btn btn-success btn-sm" data-toggle="modal" data-target="#edit"
-                    onclick="edit('{{ user.name }}','{{ user.pwd }}')">
+                    onclick="edit('{{ user.pk }}', '{{ user.name }}','{{ user.pwd }}', '{{ user.sex }}', '{{ user.age }}', '{{ user.email }}')">
                     <span class="glyphicon glyphicon-edit"></span>
                 </button>
                 <button class="btn btn-danger btn-sm" data-toggle="modal" data-target="#del"
@@ -138,19 +138,37 @@
             </div>
             <div class="modal-body">
                 <div class="form-group">
+                    <label for="">用户Id</label>
+                    <input type="text" id="edit_id" name="edit_id" class="form-control" placeholder="id" autocomplete="off" disabled>
+                </div>
+                <div class="form-group">
                     <label for="">用户名</label>
-                    <input type="text" id="account" name="account" class="form-control" placeholder="请输入用户名"
-                        value="admin1" autocomplete="off">
+                    <input type="text" id="edit_name" name="edit_name" class="form-control" placeholder="请输入用户名" autocomplete="off">
                 </div>
                 <div class="form-group">
                     <label for="">密码</label>
-                    <input type="text" id="pwd" name="pwd" class="form-control" placeholder="请输入密码" value="password1"
-                        autocomplete="off">
+                    <input type="text" id="edit_pwd" name="edit_pwd" class="form-control" placeholder="请输入密码" autocomplete="off">
+                </div>
+                <div class="form-group">
+                    <label for="">性别</label>
+{#                    <input type="text" id="edit_name" name="edit_name" class="form-control" placeholder="请输入用户名" autocomplete="off">#}
+                    <select id="edit_sex" class="form-control">
+                            <option value="True">男</option>
+                            <option value="False">女</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="">年龄</label>
+                    <input type="text" id="edit_age" name="edit_age" class="form-control" placeholder="请输入年龄" autocomplete="off">
+                </div>
+                <div class="form-group">
+                    <label for="">邮箱</label>
+                    <input type="text" id="edit_email" name="edit_email" class="form-control" placeholder="请输入邮箱" autocomplete="off">
                 </div>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
-                <button type="button" class="btn btn-primary">确定</button>
+                <button type="button" id="edit_btn" class="btn btn-primary">确定</button>
             </div>
         </div>
     </div>
@@ -191,9 +209,14 @@
 
 {% block script %}
 <script type="text/javascript">
-    function edit(name, pwd) {
-        $("#account").val(name);
-        $("#pwd").val(pwd);
+    function edit(id, name, pwd, sex, age, email) {
+        $("#edit_id").val(id);
+        $("#edit_name").val(name);
+        $("#edit_pwd").val(pwd);
+        $("#edit_sex").val(sex);
+        $("#edit_age").val(age);
+        $("#edit_email").val(email);
+        {#$("#edit_pwd").val(pwd);#}
     }
 
     function del(id, name) {
@@ -212,18 +235,18 @@
 
         addBtn.click(function () {
             name_val = name.val();
-            pwd_val_ = pwd.val();
+            pwd_val = pwd.val();
             sex_val = sex.val();
             age_val = age.val();
             email_val = email.val()
 
             console.log(name_val);
-            console.log(pwd_val_);
+            console.log(pwd_val);
             console.log(sex_val);
             console.log(age_val);
             console.log(email_val);
 
-            if(name_val.length<5 || pwd_val_.length<5){
+            if(name_val.length<5 || pwd_val.length<5){
                 alert('用户名和密码长度必须大于5哦~')
                 return;
             }
@@ -265,7 +288,63 @@
 				alert(result);
                 window.location.reload();
             })
-	    })
+	    });
+
+        editBtn = $("#edit_btn");
+        var edit_id = $("#edit_id");
+        var edit_name = $("#edit_name");
+        var edit_pwd = $("#edit_pwd");
+        var edit_sex = $("#edit_sex");
+        var edit_age = $("#edit_age");
+        var edit_email = $("#edit_email");
+        editBtn.click(function () {
+            id_val = edit_id.val();
+            name_val = edit_name.val();
+            pwd_val_ = edit_pwd.val();
+            sex_val = edit_sex.val();
+            age_val = edit_age.val();
+            email_val = edit_email.val();
+
+            console.log(id_val);
+            console.log(name_val);
+            console.log(pwd_val_);
+            console.log(sex_val);
+            console.log(age_val);
+            console.log(email_val);
+
+            if(name_val.length<5 || pwd_val_.length<5){
+                alert('用户名和密码长度必须大于5哦~');
+                return;
+            }
+
+            var reNumber = /^\d+$/;
+            if(!reNumber.test(age_val)){
+                alert('年龄必须为数字哦~');
+                edit_age.val("");
+                return;
+            }
+
+            var reEmail = /^[a-zA-Z0-9_-]+@([a-zA-Z0-9]+\.)+(com|cn|net|org)$/;
+            if(!reEmail.test(email_val)){
+                alert('邮箱格式不正确~（仅支持以com|cn|net|org为后缀的邮箱）');
+                edit_email.val("");
+                return ;
+            }
+
+            $.post("{% url 'manager:user_update' %}", {
+                id: id_val,
+                name: name_val,
+                pwd: pwd_val_,
+                sex: sex_val,
+                age: age_val,
+                email: email_val,
+                csrfmiddlewaretoken: '{{ csrf_token }}'
+                }, function (result) {
+                    alert(result);
+                    window.location.reload();
+            })
+        });
+
     })
 
 
