@@ -67,47 +67,10 @@ def login(request):
 
 def register(request):
     uname = request.session.get('uname', '未登录')
-    is_handle_register = request.POST.get('is_handle_register', False)
-    if is_handle_register:
-        account = {
-            'name': request.POST.get('name', None),
-            'pwd': request.POST.get('pwd', None),
-            'pwd2': request.POST.get('pwd2', None)
-        }
-        if len(account['name']) < 5 or len(account['pwd']) < 5:
-            register_result = False
-            register_info = '用户名和密码长度必须大于5！'
-        else:
-            if account['pwd'] == account['pwd2']:
-                try:
-                    UserInfo.manager.filter(name=account['name'])[0]
-                except IndexError:
-                    register_result = True
-                    register_info = '注册成功！'
-                    # save user info to db
-                    new_user = UserInfo.manager.create(account)
-                    new_user.save()
-                    request.session['uname'] = account['name']
-                    request.session.set_expiry(0)
-                else:
-                    register_result = False
-                    register_info = '该用户名（{}）已存在！'.format(account['name'])
-            else:
-                register_result = False
-                register_info = '两次输入的密码不一致！'
-        context = {
-            'page_title': '注册',
-            'name': uname,
-            'register_result': register_result,
-            'register_info': register_info,
-            'is_handle_register': is_handle_register,
-        }
-    else:
-        context = {
-            'page_title': '注册',
-            'name': uname,
-            'is_handle_register': is_handle_register,
-        }
+    context = {
+        'page_title': '注册',
+        'name': uname,
+    }
     return render(request, 'user/register.html', context)
 
 
