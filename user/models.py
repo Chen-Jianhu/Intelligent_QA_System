@@ -6,14 +6,10 @@ class UserInfoManager(models.Manager):
         user = UserInfo()
         user.name = account['name']
         user.pwd = account['pwd']
-        if account['sex']:
-            user.sex = account['sex']
-        if account['age']:
-            user.age = account['age']
-        if account['email']:
-            user.email = account['email']
-        if account['img_path']:
-            user.sex = account['img_path']
+        user.sex = account['sex']
+        user.age = account['age']
+        user.email = account['email']
+        user.img_path = account['img_path']
         return user
 
 
