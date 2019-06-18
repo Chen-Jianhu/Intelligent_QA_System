@@ -389,9 +389,26 @@ def user_update(request):
         'page_title': '修改用户资料',
         'name': mname,
     }
+    edit_id = request.POST.get('id', None)
     if mname != '未登录':
-        pass
-    return HttpResponse('开发中')
+        try:
+            need_edit_user = UserInfo.manager.get(pk=edit_id)
+        except:
+            result = '修改失败,未找在数据库到此用户!'
+        else:
+            try:
+                need_edit_user.name = request.POST.get('name', None)
+                need_edit_user.pwd = request.POST.get('pwd', None)
+                need_edit_user.age = eval(request.POST.get('age', None))
+                need_edit_user.age = request.POST.get('age', None)
+                need_edit_user.email = request.POST.get('email', None)
+                need_edit_user.save()
+                result = '更新用户信息成功！'
+            except:
+                result = '更新用户信息失败！\n 错误原因：写入数据时出错。'
+    else:
+        result = '后台管理操作需要先登录管理员账户！'
+    return HttpResponse(result)
 
 
 def delete_file(request):
@@ -423,11 +440,12 @@ def user_create(request):
         account = {
             'name': request.POST.get('name', None),
             'pwd': request.POST.get('pwd', None),
-            'sex': request.POST.get('sex', None),
+            'sex': eval(request.POST.get('sex', True)),
             'age': request.POST.get('age', None),
             'email': request.POST.get('email', None),
-            'img_path': None,
+            'img_path': '/static/user/img/user.png',
         }
+        print(account)
         try:
             UserInfo.manager.filter(name=account['name'])[0]
         except IndexError:
