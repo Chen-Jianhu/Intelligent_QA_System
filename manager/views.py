@@ -91,7 +91,7 @@ def upload_file(request):
     if mname != '未登录':
         is_handle_upload = request.POST.get('is_handle_upload', False)
         context['is_handle_upload'] = is_handle_upload
-        if is_handle_upload: # 处理上传
+        if is_handle_upload:  # 处理上传
             if request.method == "POST":
                 file = request.FILES['doc']
                 file_path = '%s/%s' % (settings.UPLOAD_ROOT, file.name)
