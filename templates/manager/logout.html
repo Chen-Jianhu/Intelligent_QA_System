@@ -9,6 +9,9 @@
             });
             setTimeout(function () {
                 $("#info_modal").modal('hide');
+            }, 1500);
+            setTimeout(function () {
+                window.location.href = "{% url 'manager:index' %}";
             }, 1000);
         });
     </script> 
