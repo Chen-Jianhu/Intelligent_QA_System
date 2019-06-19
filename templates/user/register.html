@@ -123,7 +123,7 @@ $(function () {
             return ;
         }
 
-        $.post("{% url 'manager:user_create' %}", {
+        $.post("{% url 'user:register_handle' %}", {
             name: name_val,
             pwd: pwd_val,
             sex: sex_val,
