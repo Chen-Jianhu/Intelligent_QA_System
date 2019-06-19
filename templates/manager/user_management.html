@@ -72,7 +72,7 @@
                 {% if i == index %}
                     <li class="active"><a href="#">{{ i }}</a></li>
                 {% else %}
-                    <li><a href="{% url 'manager:qa_management' i %}">{{ i }}</a></li>
+                    <li><a href="{% url 'manager:user_management' i %}">{{ i }}</a></li>
                 {% endif %}
             {% endif %}
         {%endfor%}
