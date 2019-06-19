@@ -74,6 +74,36 @@ def register(request):
     return render(request, 'user/register.html', context)
 
 
+def register_handle(request):
+    uname = request.session.get('uname', '未登录')
+    context = {
+        'page_title': '新增用户',
+        'name': uname,
+    }
+    account = {
+        'name': request.POST.get('name', None),
+        'pwd': request.POST.get('pwd', None),
+        'sex': eval(request.POST.get('sex', True)),
+        'age': request.POST.get('age', None),
+        'email': request.POST.get('email', None),
+        'img_path': '/static/user/img/user.png',
+    }
+    try:
+        UserInfo.manager.filter(name=account['name'])[0]
+    except IndexError:
+        # save user info to db
+        try:
+            new_user = UserInfo.manager.create(account)
+            new_user.save()
+            result = '注册成功！'
+            request.session['uname'] = account['name']
+        except:
+            result = '注册失败！写入数据错误！'
+    else:
+        result = '注册失败：该用户名（{}）已存在！'.format(account['name'])
+    return HttpResponse(result)
+
+
 def logout(request):
     uname = request.session.get('uname', '未登录')
     if uname == '未登录':
@@ -99,21 +129,22 @@ def get_answer(request):
         es = QASearch(index="qa_pairs")
         # es.insert_from_file('./QA_pairs_compute.json')
         try:
-            result, url = es.search_data(question)
+            result, url, subject = es.search_data(question)
             # answer = result.replace('\n', '<br>') + '<br>答案链接：' + '<a target="_blank" style="color:#FFFFFF" href=' + url + '>' + url
             answer = result
             if url:
                 answer += '<br>答案链接：' + '<a target="_blank" style="color:#FFFFFF" href=' + url + '>' + url + '</a>'
+            answer += '<br>主题：' + subject + '<br>'
             print('[{}]调用es search'.format(time.ctime()))
         except:
             # 调用图灵机器人
-            R = ChatRobot()
-            answer = R.chat_with_tulin(uname, question)
+            Robot = ChatRobot()
+            answer = Robot.chat_with_tulin(uname, question)
             if answer != 'Error':
                 print('[{}]调用图灵机器人器人'.format(time.ctime()))
             else:
                 # 调用青云客机器人
-                answer = R.chat_with_qyk(question)
+                answer = Robot.chat_with_qyk(question)
                 print('[{}]调用青云客机器人'.format(time.ctime()))
     return HttpResponse(answer)
 
@@ -130,3 +161,5 @@ def chat(request):
         'answer': answer,
     }
     return render(request, 'user/chat.html', context)
+
+
