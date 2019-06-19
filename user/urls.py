@@ -17,6 +17,7 @@ urlpatterns = [
     url(r'^$', views.index, name='index'),
     url(r'^login/', views.login, name='login'),
     url(r'^register/', views.register, name='register'),
+    url(r'^register_handle/', views.register_handle, name='register_handle'),
     url(r'^logout/', views.logout, name='logout'),
     url(r'^chat/', views.chat, name='chat'),
     url(r'^get_answer/', views.get_answer, name='get_answer'),
