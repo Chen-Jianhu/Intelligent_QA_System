@@ -76,7 +76,8 @@ class QASearch(object):
             # ans = json.dumps(result, indent=2, ensure_ascii=False)
             # print(ans)
             return result["hits"]["hits"][0]['_source']['answer'], result["hits"][
-                "hits"][0]['_source']['link']
+                "hits"][0]['_source']['link'], result["hits"][
+                "hits"][0]['_source']['subject']
         except:
             print("ES Not Found!")
             return -1
