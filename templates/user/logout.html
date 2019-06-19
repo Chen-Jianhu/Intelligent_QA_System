@@ -9,7 +9,11 @@
             });
             setTimeout(function () {
                 $("#logout").modal('hide');
-            }, 700);
+            }, 1500);
+            setTimeout(function () {
+                window.location.href = "{% url 'user:chat' %}";
+            }, 1500);
+
         });
     </script> 
     
