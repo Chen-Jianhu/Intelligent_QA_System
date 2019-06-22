@@ -130,7 +130,7 @@
 			$.post("{% url 'user:get_answer' %}", { user_question: sText, csrfmiddlewaretoken: '{{ csrf_token }}' }, function (result) {
 				console.log(result)
                 //$mesBox.html($mesBox.html() + '<br>'+sText+'<br>' + '{{answer}}');
-                $mesBox.html($mesBox.html()+'<div class="btalk " style="margin-top:18px;display:inline-block;vertical-align:top"><span>'+sText+' </span></div>'+'<div style=" width:50px;height:50px;display:inline-block;vertical-align:top;"> <img src="{% static 'img/user.gif' %}" style="border-radius: 10px; margin: 10px" height="45" width="45" ><span>{{ name }} &nbsp; </span></div>')
+                $mesBox.html($mesBox.html()+'<div class="btalk " style="margin-top:18px;display:inline-block;vertical-align:top"><span>'+sText+' </span></div>'+'<div style=" width:50px;height:50px;display:inline-block;vertical-align:top;"> <img src="{{ user_img }}" style="border-radius: 10px; margin: 10px" height="45" width="45" ><span>{{ name }} &nbsp; </span></div>')
                 $mesBox.html($mesBox.html()+'<div style="margin-left:10px;width:50px;height:50px;display:inline-block;vertical-align:top;"> <img src="{% static 'img/xiaoke.png' %}" style="border-radius: 10px; margin: 5px 5px" height="45" width="45" ><span> &nbsp; &nbsp;小科</span></div>' +'<div class="atalk " style="display:inline-block;vertical-align:top;margin-top:18px;"><span>'+result+' </span></div>')
 
                 $text.val(""); // 清空输入问题的输入框
