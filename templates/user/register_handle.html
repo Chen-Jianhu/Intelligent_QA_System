@@ -1,0 +1,18 @@
+{% extends 'user/base.html' %}
+
+{% block script %}
+    <script type="text/javascript">
+        $(function(){
+            $("#info_detail").text('{{ result }}');
+            $("#info_modal").modal({
+                keyboard: true
+            });
+            setTimeout(function () {
+                $("#info_modal").modal('hide');
+            }, 2000);
+            setTimeout(function () {
+                window.location.href = "{% url 'user:chat' %}";
+            }, 2000);
+        });
+    </script>
+{% endblock %}
