@@ -2,11 +2,11 @@
 {% load staticfiles %}
 
 {% block style %}
-<style>
-    body {
-        background-color: #999;
-    }  
-</style>
+    <style>
+        body {
+            background-color: #999;
+        }
+    </style>
 {% endblock %}
 {% block content %}
     {% if not is_handle_register %}
@@ -18,36 +18,52 @@
                             <img src="{% static 'img/logo.png' %}" alt="logo" style="width:125px; height:90px;">  
                         </a>   
                         <h3>用户注册</h3>
-                        <div class="from-group" style="margin: 20px 0 10px 0;">
-                            <input type="text" id="name" name="name" class="form-control" placeholder="请输入账号" autocomplete="off">
-                        </div>
-                        <div class="from-group">
-{#                                <label for="">密码</label>#}
-                            <input type="password" id="pwd" name="pwd" class="form-control" placeholder="请输入密码">
-                        </div>
-                        <div class="from-group" style="margin-top: 10px;">
-{#                                <label for="">确认密码</label>#}
-                            <input type="password" id="pwd2" name="pwd2" class="form-control" placeholder="请确认密码">
-                        </div>
-                        <div class="from-group" style="margin-top: 10px;">
-{#                                <label for="">性别</label>#}
-                            <select id="sex" class="form-control">
-                                <option value="True">男</option>
-                                <option value="False">女</option>
-                            </select>
-                        </div>
-                        <div class="from-group" style="margin-top: 10px;">
-{#                                <label for="">年龄</label>#}
-                            <input type="text" id="age" name="age" class="form-control" placeholder="请输入年龄">
-                        </div>
-                        <div class="from-group" style="margin-top: 10px;">
-{#                                <label for="">邮箱</label>#}
-                            <input type="text" id="email" name="email" class="form-control" placeholder="请输入邮箱">
-                        </div>
-                        <br>
-                        <div class="form-group">
-                            <input id="add_btn" class="btn btn-info btn-block" value="立即注册">
-                        </div>
+                        <form action="{% url 'user:register_handle' %}" method="post" onsubmit="return checkUser()" enctype="multipart/form-data">
+                            {% csrf_token %}
+                            <div class="from-group text-left" style="margin: 20px 0 10px 0;">
+                                <label for="">头像</label>
+                                <input type="file" name="img_file"/>
+                            </div>
+                            <div class="from-group text-left" style="margin: 20px 0 10px 0;">
+                                <label for="">用户名</label>
+                                <input type="text" id="name" name="name" class="form-control" placeholder="请输入账号" autocomplete="off">
+                            </div>
+                            <div class="from-group text-left" >
+                                <label for="">密码</label>
+                                <input type="password" id="pwd" name="pwd" class="form-control" placeholder="请输入密码">
+                            </div>
+                            <div class="from-group text-left" style="margin-top: 10px;">
+                                <label for="">确认密码</label>
+                                <input type="password" id="pwd2" name="pwd2" class="form-control" placeholder="请确认密码">
+                            </div>
+                            <div class="from-group text-left" style="margin-top: 10px;">
+                                <label for="">性别</label>
+{#                                <br>#}
+{#                                <input type="radio" name="sex" value="True" checked/> 男#}
+{#                                <input type="radio" name="sex" value="False" /> 女#}
+                                <select name="sex" id="sex" class="form-control">
+                                    <option value="True">男</option>
+                                    <option value="False">女</option>
+                                </select>
+                            </div>
+                            <div class="from-group text-left" style="margin-top: 10px;">
+                                <label for="">年龄</label>
+                                <input type="text" id="age" name="age" class="form-control" placeholder="请输入年龄">
+                            </div>
+                            <div class="from-group text-left" style="margin-top: 10px;">
+                                <label for="">邮箱</label>
+                                <input type="text" id="email" name="email" class="form-control" placeholder="请输入邮箱">
+                            </div>
+                            <br>
+                            <div class="form-group">
+                                <input type="submit" class="btn btn-info btn-block" value="立即注册">
+                            </div>
+                        </form>
+{#                        <form method="post" action="{% url 'user:register_handle' %}" enctype="multipart/form-data">#}
+{#                            {% csrf_token %}#}
+{#                            <input type="file" name="img"/> <br><br>#}
+{#                            <input type="submit" value="上 传">#}
+{#                        </form>#}
                     </div>
                 </div>
             </div>
@@ -69,72 +85,62 @@
 
 
 {% block script %}
-<script>
-$(function () {
-    var addBtn = $("#add_btn"); // 取到新增-确定按钮
-    var name = $("#name");
-    var pwd = $("#pwd");
-    var pwd2 = $("#pwd2");
-    var sex = $("#sex");
-    var age = $("#age");
-    var email = $("#email");
+    <script>
+        function checkUser() {
+            var name = $("#name");
+            var pwd = $("#pwd");
+            var pwd2 = $("#pwd2");
+            var sex = $("#sex");
+            var age = $("#age");
+            var email = $("#email");
+            var img_file = $("#img_file");
 
-    addBtn.click(function () {
-        name_val = name.val();
-        pwd_val = pwd.val();
-        pwd2_val = pwd2.val();
-        sex_val = sex.val();
-        age_val = age.val();
-        email_val = email.val()
+            name_val = name.val();
+            pwd_val = pwd.val();
+            pwd2_val = pwd2.val();
+            sex_val = sex.val();
+            age_val = age.val();
+            email_val = email.val()
+            img_file_content = img_file.val()
 
-        console.log(name_val);
-        console.log(pwd_val);
-        console.log(pwd2_val);
-        console.log(sex_val);
-        console.log(age_val);
-        console.log(email_val);
+            console.log(img_file_content);
+            console.log(name_val);
+            console.log(pwd_val);
+            console.log(pwd2_val);
+            console.log(sex_val);
+            console.log(age_val);
+            console.log(email_val);
 
-        if(name_val.length<5){
-            alert('用户名长度必须大于5哦~')
-            return;
+            if (name_val.length < 5) {
+                alert('用户名长度必须大于5哦~')
+                return false;
+            }
+
+            if (pwd_val.length < 5) {
+                alert('密码长度必须大于5哦~')
+                return false;
+            }
+
+            if (pwd_val != pwd2_val) {
+                alert('两次输入的密码不一致哦~')
+                return false;
+            }
+
+            var reNumber = /^\d+$/;
+            if (!reNumber.test(age_val)) {
+                alert('年龄必须为数字哦~');
+                age.val("");
+                return false;
+            }
+
+            var reEmail = /^[a-zA-Z0-9_-]+@([a-zA-Z0-9]+\.)+(com|cn|net|org)$/;
+            if (!reEmail.test(email_val)) {
+                alert('邮箱格式不正确~（仅支持以com|cn|net|org为后缀的邮箱）');
+                email.val("");
+                return false;
+            }
+
+            return true;
         }
-
-        if(pwd_val.length<5){
-            alert('密码长度必须大于5哦~')
-            return;
-        }
-
-        if(pwd_val != pwd2_val){
-            alert('两次输入的密码不一致哦~')
-            return;
-        }
-
-        var reNumber = /^\d+$/;
-        if(!reNumber.test(age_val)){
-            alert('年龄必须为数字哦~');
-            age.val("");
-            return;
-        }
-
-        var reEmail = /^[a-zA-Z0-9_-]+@([a-zA-Z0-9]+\.)+(com|cn|net|org)$/;
-        if(!reEmail.test(email_val)){
-            alert('邮箱格式不正确~（仅支持以com|cn|net|org为后缀的邮箱）');
-            email.val("");
-            return ;
-        }
-
-        $.post("{% url 'user:register_handle' %}", {
-            name: name_val,
-            pwd: pwd_val,
-            sex: sex_val,
-            age: age_val,
-            email: email_val,
-            csrfmiddlewaretoken: '{{ csrf_token }}'
-            }, function (result) {
-                alert(result);
-            window.location.href = "{% url 'user:chat' %}";
-        })
-    });
-})
-</script>
+    </script>
 {% endblock script %}
