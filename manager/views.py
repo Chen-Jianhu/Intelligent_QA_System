@@ -376,6 +376,8 @@ def user_delete(request):
         except:
             result = '删除失败,未找在数据库到此用户!'
         else:
+            # 删除存在服务器的头像
+            os.remove(need_del_user.img_path)
             need_del_user.delete()
             result = '删除成功！'
     else:
