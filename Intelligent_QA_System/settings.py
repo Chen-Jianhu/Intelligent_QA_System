@@ -112,4 +112,5 @@ STATICFILES_DIRS = [
 ]
 
 # 文档目录
-UPLOAD_ROOT=os.path.join(BASE_DIR, "static/manager/upload")
+UPLOAD_ROOT = os.path.join(BASE_DIR, "static/manager/upload")
+USER_IMG_ROOT = os.path.join(BASE_DIR, "static/user/img")
