@@ -1,5 +1,6 @@
 from django.shortcuts import render
 from django.http import HttpResponse
+from django.conf import settings
 
 from .models import *
 from py.QASearch import *
@@ -77,31 +78,49 @@ def register(request):
 def register_handle(request):
     uname = request.session.get('uname', '未登录')
     context = {
-        'page_title': '新增用户',
+        'page_title': '用户注册',
         'name': uname,
     }
-    account = {
-        'name': request.POST.get('name', None),
-        'pwd': request.POST.get('pwd', None),
-        'sex': eval(request.POST.get('sex', True)),
-        'age': request.POST.get('age', None),
-        'email': request.POST.get('email', None),
-        'img_path': '/static/user/img/user.png',
-    }
+    result_img = ''
     try:
-        UserInfo.manager.filter(name=account['name'])[0]
+        UserInfo.manager.filter(name=request.POST.get('name', None))[0]
     except IndexError:
         # save user info to db
+        try:
+            # 接收头像
+            file = request.FILES.get('img_file')
+            # print('='*30+'\n'+file)
+            file_name = request.POST.get('name', 'no_name') + '.' + file.name.split('.')[-1]
+            save_path = '%s/%s' % (settings.USER_IMG_ROOT, file_name)
+            with open(save_path, 'wb') as f:
+                for content in file.chunks():
+                    f.write(content)
+        except:
+            file_name = 'user.png'
+            result_img = '(服务器接收头像失败，将使用默认用户头像！)'
+
+        account = {
+            'name': request.POST.get('name', None),
+            'pwd': request.POST.get('pwd', None),
+            'sex': eval(request.POST.get('sex')),
+            'age': request.POST.get('age', None),
+            'email': request.POST.get('email', None),
+            'img_path': '/static/user/img/' + file_name,
+        }
         try:
             new_user = UserInfo.manager.create(account)
             new_user.save()
             result = '注册成功！'
             request.session['uname'] = account['name']
         except:
-            result = '注册失败！写入数据错误！'
+            result = '注册失败！账号信息写入数据库错误！'
     else:
-        result = '注册失败：该用户名（{}）已存在！'.format(account['name'])
-    return HttpResponse(result)
+        result = '注册失败：该用户名（{}）已存在！'.format(request.POST.get('name', None))
+
+    if result_img:
+        result += result_img
+    context['result'] = result
+    return render(request, 'user/register_handle.html', context)
 
 
 def logout(request):
@@ -151,14 +170,18 @@ def get_answer(request):
 
 def chat(request):
     uname = request.session.get('uname', '未登录')
+    user_img = '/static/user/img/user.png'
     if uname == '未登录':
         answer = '您还未登陆！请先登录再向小科提问哦～<a href="/login" style="color:orange">点这里登录</a>'
     else:
         answer = '小科：您好' + uname + '，快问我一些问题吧~'
+        user = UserInfo.manager.get(name=uname)
+        user_img = user.img_path
     context = {
         'page_title': '聊天',
         'name': uname,
         'answer': answer,
+        'user_img': user_img,
     }
     return render(request, 'user/chat.html', context)
 
