@@ -42,7 +42,14 @@
             </td>
             <td class="text-center">{{ user.name }}</td>
             <td class="text-center">{{ user.pwd }}</td>
-            <td class="text-center">{{ user.sex }}</td>
+            <td class="text-center">
+            {{ user.sex }}
+                {% if use.sex %}
+                男
+                {% else %}
+                女
+                {% endif %}
+            </td>
             <td class="text-center">{{ user.age }}</td>
             <td class="text-center">{{ user.email }}</td>
             <td class="text-center">
@@ -105,7 +112,7 @@
                 <div class="form-group">
                     <label for="">性别</label>
 {#                    <input type="text" name="pwd" class="form-control" placeholder="请输入性别" autocomplete="off">#}
-                    <select id="sex" class="form-control">
+                    <select id="sex" name="sex" class="form-control">
                         <option value="True">男</option>
                         <option value="False">女</option>
                     </select>
@@ -267,7 +274,7 @@
 
             $.post("{% url 'manager:user_create' %}", {
                 name: name_val,
-                pwd: pwd_val_,
+                pwd: pwd_val,
                 sex: sex_val,
                 age: age_val,
                 email: email_val,
@@ -300,19 +307,19 @@
         editBtn.click(function () {
             id_val = edit_id.val();
             name_val = edit_name.val();
-            pwd_val_ = edit_pwd.val();
+            pwd_val = edit_pwd.val();
             sex_val = edit_sex.val();
             age_val = edit_age.val();
             email_val = edit_email.val();
 
             console.log(id_val);
             console.log(name_val);
-            console.log(pwd_val_);
+            console.log(pwd_val);
             console.log(sex_val);
             console.log(age_val);
             console.log(email_val);
 
-            if(name_val.length<5 || pwd_val_.length<5){
+            if(name_val.length<5 || pwd_val.length<5){
                 alert('用户名和密码长度必须大于5哦~');
                 return;
             }
@@ -334,7 +341,7 @@
             $.post("{% url 'manager:user_update' %}", {
                 id: id_val,
                 name: name_val,
-                pwd: pwd_val_,
+                pwd: pwd_val,
                 sex: sex_val,
                 age: age_val,
                 email: email_val,
