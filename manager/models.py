@@ -4,12 +4,12 @@ from django.db import models
 
 
 class ManagerInfo(models.Model):
-    name = models.CharField(max_length=30)
-    pwd = models.CharField(max_length=30)
+    name = models.CharField(max_length=100)
+    pwd = models.CharField(max_length=100)
     sex = models.BooleanField(default=True)  # True 男
     age = models.IntegerField(default=18)
-    email = models.CharField(max_length=30, default=None)
-    img_path = models.CharField(max_length=100, default='/static/manage/img/manager.png')
+    email = models.CharField(max_length=100, default=None)
+    img_path = models.CharField(max_length=300, default='/static/manage/img/manager.png')
 
     def __str__(self):
         return self.name
